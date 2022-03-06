@@ -7,7 +7,7 @@ cd ~ && mkdir -p src && cd src
 git clone https://github.com/falamous/dotfiles
 cd dotfiles
 ansible-galaxy install -r requirements.yml
-ansible-playbook site.yml -K
+ansible-playbook -K run.yml
 ```
 
 ## Functionality:

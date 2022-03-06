@@ -1,5 +1,3 @@
 ---
 collections:
   - name: kewlfft.aur
-roles:
-  - name: markosamuli.pyenv

@@ -19,7 +19,36 @@
           [multilib]
           Include = /etc/pacman.d/mirrorlist
         marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      register: pacman_conf
       become: yes
+    - name: update pacman database
+      shell: "pacman -Syy"
+      when: pacman_conf.changed
+      become: yes
+    - name: link xinitrc
+      file:
+        src: '/home/{{username}}/{{ repo_location }}/xinitrc'
+        dest: '/home/{{ username }}/.xinitrc'
+        state: link
+    - name: link Xresources
+      file:
+        src: '/home/{{username}}/{{ repo_location }}/Xresources'
+        dest: '/home/{{ username }}/.Xresources'
+        state: link
+    - name: link config
+      file:
+        src: '/home/{{username}}/{{ repo_location }}/config'
+        dest: '/home/{{ username }}/.config'
+        state: link
+    - name: link scripts
+      file:
+        src: '/home/{{username}}/{{ repo_location }}/scripts'
+        dest: '/home/{{ username }}/scripts'
+        state: link
+    - name: zshenv
+      copy:
+        content: 'source ~/.config/zsh/zshenv'
+        dest: '/home/{{ username }}/.zshenv'
     - name: install yay
       kewlfft.aur.aur:
         name: yay
@@ -29,27 +58,6 @@
       kewlfft.aur.aur:
         name: rsync
         state: present
-    - name: link config and x files
-      file:
-        src: '/home/{{username}}/{{ repo_location }}/xinitrc'
-        dest: '/home/{{ username }}/.xinitrc'
-        state: link
-      file:
-        src: '/home/{{username}}/{{ repo_location }}/Xresources'
-        dest: '/home/{{ username }}/.Xresources'
-        state: link
-      file:
-        src: '/home/{{username}}/{{ repo_location }}/config'
-        dest: '/home/{{ username }}/.config'
-        state: link
-      file:
-        src: '/home/{{username}}/{{ repo_location }}/scripts'
-        dest: '/home/{{ username }}/scripts'
-        state: link
-    - name: zshenv
-      copy:
-        content: 'source ~/.config/zsh/zshenv'
-        dest: '/home/{{ username }}/.zshenv'
     # - name: copy ~/ files
     #   synchronize:
     #     src: "{{ home_files_location }}"
@@ -61,10 +69,11 @@
     #     owner: falamous
     #     recurse: yes
     #   become: yes
-    - name: link .mozilla
+    - name: create share/mozilla
       file:
         name: '/home/{{username}}/share/mozilla'
         state: directory
+    - name: link mozilla
       file:
         src: '/home/{{username}}/share/mozilla'
         dest: '/home/{{ username }}/.mozilla'
@@ -95,6 +104,7 @@
     - name: window manager and graphical tools
       loop:
         - qtile
+        - python-xlib
         - picom
         - unclutter
         - dunst
@@ -106,8 +116,11 @@
         - mpv
         - xwallpaper
         - pinta
+        - alacritty
       include_role:
         name: aur_install
+
+    - import_tasks: tasks/ly.yml
 
     - import_tasks: tasks/nvim.yml
 
@@ -126,6 +139,7 @@
       loop:
         - torbrowser-launcher
         - chromium
+        - firefox
         - google-chrome
       include_role:
         name: aur_install
@@ -230,7 +244,7 @@
         - unzip
         - p7zip
         - wget
-        - aria2c
+        - aria2
         - pv
         - imagemagick
         - mlocate
@@ -278,7 +292,6 @@
         - pipewire
         - pipewire-pulse
         - pipewire-alsa
-        - pipewire-jack
         - pulsemixer
       include_role:
         name: aur_install
@@ -291,10 +304,12 @@
       include_role:
         name: aur_install
 
-    - name: add mac-randomization scripts
+    - name: copy macgen (mac address randomization script)
       copy:
         src: "scripts/macgen"
         dest: "/bin/macgen"
+      become: yes
+    - name: copy changemac (mac address change script)
       copy:
         src: "scripts/changemac"
         dest: "/bin/changemac"
@@ -316,7 +331,7 @@
         create: yes
       become: yes
 
-    - name: edit hwdb
+    - name: edit hwdb (CAPS to escape)
       blockinfile:
         path: /etc/udev/hwdb.d/generic-keyboard.hwdb
         block: |
@@ -326,6 +341,7 @@
         create: yes
       become: yes
 
+    - name: edit hwdb (laptop keys)
       blockinfile:
         path: /etc/udev/hwdb.d/notebook-keyboard.hwdb
         block: |

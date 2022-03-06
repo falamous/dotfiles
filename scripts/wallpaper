@@ -1,0 +1,15 @@
+#!/bin/sh
+
+
+# This script does the following:
+#	Run by itself, set the wallpaper (at X start).
+#	If given a file, set that as the new wallpaper.
+#	If given a directory, choose random file in it.
+#	If wal is installed, also generates a colorscheme.
+
+# Location of link to wallpaper link.
+
+wallpaper="${XDG_DATA_HOME:-$HOME/.local/share/}/wallpaper"
+
+[ -f "$1" ] && ln -sf "$(readlink -f "$1")" "$wallpaper"
+xwallpaper --zoom "$wallpaper"
