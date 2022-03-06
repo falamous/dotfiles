@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "$#" -ne 2 ]; then
+  echo "Usage: $0 <old mac> <new mac>" >&2
+  exit 1
+fi
+
+device=$(ip addr | grep -B 1 $1 | sed q | cut -d: -f 2)
+
+/usr/bin/ip link set $device down
+/usr/bin/ip link set $device address $2
+/usr/bin/ip link set $device up

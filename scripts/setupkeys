@@ -1,0 +1,13 @@
+#!/bin/sh
+# localectl --no-convert set-x11-keymap us,ru pc104 qwerty grp:ctrl_shift_toggle
+# setxkbmap -layout us,ru -option grp:ctrl_shift_toggle -option caps:escape
+
+# setxkbmap -layout us,ru -option grp:lwin_toggle -option caps:escape
+# setxkbmap -layout us,ru -option grp:alt_shift_toggle -option caps:escape
+
+setxkbmap -layout us,ru -option grp:alt_shift_toggle
+# localectl --no-convert set-x11-keymap us,ru pc104 qwerty grp:alt_shift_toggle
+
+# xmodmap -e 'keycode 119 = Insert'
+# xmodmap -e 'keycode 122 = Home'
+# xmodmap -e 'keycode 123 = End'

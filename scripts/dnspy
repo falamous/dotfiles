@@ -1,0 +1,3 @@
+#!/bin/sh
+
+(wine ~/tools/dnspy/dnSpy.exe  "$@" | llog) &

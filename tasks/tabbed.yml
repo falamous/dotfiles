@@ -1,0 +1,12 @@
+---
+- name: clone tabbed
+  git:
+    repo: https://github.com/falamous/tabbed
+    dest: "/home/{{ username }}/tabbed"
+
+- name: compile and install tabbed
+  shell:
+    chdir: "/home/{{ username }}/tabbed"
+    cmd: "make install"
+    creates: "/usr/local/bin/tabbed"
+  become: yes

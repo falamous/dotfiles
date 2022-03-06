@@ -1,0 +1,36 @@
+{
+    "languageserver": {
+        "ccls": {
+            "command": "ccls",
+            "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
+            "rootPatterns": [".ccls-root", "compile_commands.json"],
+            "ignoredRootPaths": [],
+            "requireRootPattern" : false,
+            "initializationOptions": {
+                "cache": {
+                    "directory": ".ccls-cache"
+                },
+                "highlight": { "lsRanges" : true },
+                "client": {
+                    "snippetSupport": true
+                }
+            }
+        },
+        "golang": {
+            "command": "gopls",
+            "rootPatterns": ["go.mod"],
+            "requireRootPattern" : false,
+            "ignoredRootPaths": [],
+            "disableWorkspaceFolders": true,
+            "filetypes": ["go"]
+        },
+        "rust": {
+            "command": "rust-analyzer",
+            "rootPatterns": ["Cargo.toml"],
+            "requireRootPattern" : false,
+            "ignoredRootPaths": [],
+            "disableWorkspaceFolders": true,
+            "filetypes": ["rust"]
+        }
+    }
+}

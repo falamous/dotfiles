@@ -1,0 +1,17 @@
+---
+- name: install asusctl
+  loop:
+    - asusctl
+  include_role:
+    name: aur_install
+
+- name: enable and start asusd
+  systemd:
+    name: asusd
+    state: started
+    enabled: yes
+    masked: no
+  become: yes
+
+- name: configure battery charge limit
+  shell: "asusctl -c 85"

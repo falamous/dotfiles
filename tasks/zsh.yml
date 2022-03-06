@@ -1,0 +1,14 @@
+---
+- name: install zsh and extensions
+  loop:
+    - zsh
+    - zsh-syntax-highlighting
+    - zsh-autosuggestions
+  include_role:
+    name: aur_install
+
+- name: make zsh the default shell
+  user:
+    name: "{{ username }}"
+    shell: /bin/zsh
+  become: yes

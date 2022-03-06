@@ -1,0 +1,19 @@
+---
+- name: install nvim and external programms
+  loop:
+    - neovim
+    - neovim-plug
+    - nodejs # For Coc
+    # Coc language servers
+    - ccls
+    - gopls
+    - rust-analyzer
+    - texlab
+    - pyright
+  include_role:
+    name: aur_install
+
+- name: update nvim plug
+  shell: "nvim -c 'PlugUpdate | q | q'"
+  register: nvim_update_plug
+  changed_when: "'Cloning' in nvim_update_plug.stdout"

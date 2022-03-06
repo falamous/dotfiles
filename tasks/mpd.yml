@@ -1,0 +1,15 @@
+---
+- name: install mpd
+  loop:
+    - mpd
+    - ncmpcpp
+    - python-mpd2
+  include_role:
+    name: aur_install
+
+- name: enable mpd
+  systemd:
+    name: mpd
+    enabled: yes
+    masked: no
+  become: yes

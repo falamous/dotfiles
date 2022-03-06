@@ -1,0 +1,22 @@
+/**
+ * Nordic rofi theme
+ * Adapted by undiabler <undiabler@gmail.com>
+ *
+ * Nord Color palette imported from https://www.nordtheme.com/
+ *
+ */
+
+configuration {
+
+	font: "Courier Prime Code 20";
+}
+
+* {
+    background:            #222329;
+    foreground:           #eeeeee;
+    alternate-normal-background: #202024;
+
+    selected-normal-background:  #35353f;
+    selected-normal-foreground:  #ffffff;
+
+}

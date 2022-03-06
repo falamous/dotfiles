@@ -1,0 +1,32 @@
+#!/bin/python
+import secrets
+import binascii
+
+
+with open("/home/falamous/share/macs_to_change") as f:
+    MACS = f.readlines()
+
+RULE_TEMPLATE = (
+        'ACTION=="add",'
+        'SUBSYSTEM=="net",'
+        'ATTR{address}=="%(oldmac)s",'
+        'PROGRAM="/bin/changemac %(oldmac)s %(newmac)s"\n'
+        )
+
+
+def generate_random_mac():
+    mac = bytearray(secrets.token_bytes(6))
+    mac[0] &= 254
+    mac[1] &= 254
+    return ":".join(
+            hex(b)[2:].zfill(2) for b in mac
+            )
+
+
+with open("/etc/udev/rules.d/75-mac-spoof.rules", "w") as f:
+    for mac in MACS:
+        f.write(RULE_TEMPLATE % {
+            "oldmac" : mac,
+            "newmac" : generate_random_mac(),
+            })
+

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# wine ~/.local/share/wine/drive_c/Program\ Files/IDA\ 7.0/ida64.exe "$@" &
+
+(wine ~/tools/IDA\ Pro\ 7.5/ida64.exe "$@" 2>/dev/null | llog) &

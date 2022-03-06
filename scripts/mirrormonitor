@@ -1,0 +1,59 @@
+#!/bin/sh
+
+{
+internal_regex=eDP
+
+function get_connected_outputs() {
+    xrandr |
+        grep connected |
+        grep -v disconnected |
+        cut -d' ' -f1
+}
+
+prev_o=
+for o in $(get_connected_outputs)
+do
+    if [[ -n prev_o ]]; then
+        xrandr --output "$o" --auto --left-of "$prev_o"
+    else
+        xrandr --output "$o" --auto
+    fi
+    prev_o="$o"
+done
+
+# external_outputs=$(get_connected_outputs |
+#     grep -v $internal_regex
+# )
+# internal_outputs=$(get_connected_outputs |
+#     grep $internal_regex
+# )
+
+disconnected_outputs=$(xrandr |
+    grep disconnected |
+    cut -d' ' -f 1
+)
+
+
+for o in $disconnected_outputs; do
+    xrandr --output $o --off
+done
+
+# for o in $external_outputs; do
+#     xrandr --output $o --auto
+# done
+
+
+# for o in $internal_outputs
+# do
+#     if [[ -z "$external_outputs" ]]; then
+#         echo "$o on"
+#         xrandr --output $o --auto
+#     else
+#         echo "$o off"
+#         xrandr --output $o --off
+#     fi
+# done
+
+setupkeys
+wallpaper
+} 2>&1 | llog

@@ -1,0 +1,21 @@
+---
+- name: install ly
+  loop:
+    - ly
+  include_role:
+    name: aur_install
+
+- name: enable ly
+  systemd:
+    name: ly
+    enabled: yes
+    masked: no
+  become: yes
+
+- name: configure ly
+  blockinfile:
+    path: /etc/ly/config.ini
+    block: |
+      animate = true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+  become: yes

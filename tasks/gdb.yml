@@ -1,0 +1,16 @@
+---
+- name: install gdb and gef
+  loop:
+    - gdb
+    # - gdb-multiarch
+    - gef-git
+  include_role:
+    name: aur_install
+
+- name: 
+  blockinfile:
+    path: "/etc/gdb/gdbinit"
+    block: |
+      source /usr/share/gef/gef.py
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+  become: yes
