@@ -117,8 +117,14 @@
         - xwallpaper
         - pinta
         - alacritty
+        - xdg-user-dirs
       include_role:
         name: aur_install
+
+    - name: create ~/downloads
+      file:
+        name: "/home/{{ username }}/downloads"
+        state: directory
 
     - import_tasks: tasks/ly.yml
 
@@ -132,15 +138,6 @@
         - adobe-source-code-pro-fonts
         - ttf-nerd-fonts-symbols
         - ttf-symbola
-      include_role:
-        name: aur_install
-
-    - name: browsers
-      loop:
-        - torbrowser-launcher
-        - chromium
-        - firefox
-        - google-chrome
       include_role:
         name: aur_install
 
@@ -362,3 +359,15 @@
     - name: update time
       shell: "ntpdate pool.ntp.org"
       become: yes
+
+    - name: browsers
+      loop:
+        - torbrowser-launcher
+        - chromium
+        - firefox
+        - google-chrome
+      include_role:
+        name: aur_install
+
+     # - name: set firefox as default browser 
+     #   shell: "firefox --setDefaultBrowser"
