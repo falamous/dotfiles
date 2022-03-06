@@ -220,9 +220,10 @@
 
     - import_tasks: tasks/tabbed.yml
 
-    - name: cli utilities
+    - name: daemons
       loop:
         - cronie
+        - tor
         - docker
         - docker-compose
       include_role:
