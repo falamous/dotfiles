@@ -29,4 +29,4 @@ ansible-playbook site.yml -K
 - can copy and chown files from specified directory
 
 ## A word of warning
-This installs A LOT OF stuff. The final memory footprint of the installation is around 20G, so if you want to use this pick and choose what you actually care to install.
+This installs A LOT OF stuff. The final disk footprint is around 20G, so if you want to use this, pick and choose what you actually care to install.
