@@ -3,15 +3,27 @@
   hosts: 127.0.0.1
   connection: local
   tasks:
-    - name: configure git
-      copy:
-        content: |
-          [user]
-              email = falamous@mail.ru
-              name = falamous
-          [core]
-            editor = nvim
-        dest: '/home/{{ username }}/.gitconfig'
+    - name: configure git email
+      ini_file:
+        path: '/home/{{ username }}/.gitconfig'
+        section: user
+        option: email
+        value: falamous@mail.ru
+
+    - name: configure git username
+      ini_file:
+        path: '/home/{{ username }}/.gitconfig'
+        section: user
+        option: name
+        value: falamous
+
+    - name: configure git editor
+      ini_file:
+        path: '/home/{{ username }}/.gitconfig'
+        section: core
+        option: editor
+        value: nvim
+
     - name: edit pacman.conf
       blockinfile:
         path: /etc/pacman.conf
@@ -23,8 +35,9 @@
         marker: "# {mark} ANSIBLE MANAGED BLOCK"
       register: pacman_conf
       become: yes
-    - name: update pacman database
-      shell: "pacman -Syy"
+    - name: pacman -Sy
+      pacman:
+        update_cache: yes
       when: pacman_conf.changed
       become: yes
     - name: link xinitrc
@@ -85,7 +98,6 @@
         dest: '/home/{{ username }}/.mozilla'
         state: link
 
-
 - name: install and configure packages
   hosts: 127.0.0.1
   connection: local
@@ -123,12 +135,47 @@
           - pinta
           - alacritty
           - xdg-user-dirs
+          - xdotool
         state: present
 
     - name: create ~/downloads
       file:
         name: "/home/{{ username }}/downloads"
         state: directory
+
+    - name: programming languages and libraries
+      kewlfft.aur.aur:
+        name:
+          - nodejs
+          - npm
+          - yarn
+          - php
+          - go
+          - cuda
+          - gcc
+          - gtk2
+          - sdl
+          - clang
+          - ruby
+          - python2
+          - pypy3
+        state: present
+
+    - name: create .config/npm
+      file:
+        name: "/home/{{ username }}/.config/npm"
+        state: directory
+
+    - name: edit npmrc
+      blockinfile:
+        path: "/home/{{ username }}/.config/npm/pmrc"
+        block: |
+          prefix=${XDG_DATA_HOME}/npm
+          cache=${XDG_CACHE_HOME}/npm
+          tmp=${XDG_RUNTIME_DIR}/npm
+          init-module=${XDG_CONFIG_HOME}/npm/npm-init.js
+        marker: "// {mark} ANSIBLE MANAGED BLOCK"
+        create: yes
 
     - import_tasks: tasks/ly.yml
 
@@ -181,6 +228,7 @@
       kewlfft.aur.aur:
         name:
           - python
+          - python-requests
           - python-pip
           - python-gmpy2
           - python-flask
@@ -199,38 +247,6 @@
           - wine-gecko
         state: present
  
-    - name: programming languages
-      kewlfft.aur.aur:
-        name:
-          - nodejs
-          - npm
-          - yarn
-          - php
-          - gcc
-          - go
-          - cuda
-          - clang
-          - ruby
-          - python2
-          - pypy3
-        state: present
-
-    - name: create .config/npm
-      file:
-        name: "/home/{{ username }}/.config/npm"
-        state: directory
-
-    - name: edit npmrc
-      blockinfile:
-        path: "/home/{{ username }}/.config/npm/pmrc"
-        block: |
-          prefix=${XDG_DATA_HOME}/npm
-          cache=${XDG_CACHE_HOME}/npm
-          tmp=${XDG_RUNTIME_DIR}/npm
-          init-module=${XDG_CONFIG_HOME}/npm/npm-init.js
-        marker: "// {mark} ANSIBLE MANAGED BLOCK"
-        create: yes
-
     - name: qemu and crosscompiling
       kewlfft.aur.aur:
         name:
@@ -270,6 +286,8 @@
           - zip
           - unzip
           - evtest
+          - sqlite
+          - sqlitebrowser
           - p7zip
           - wget
           - aria2
@@ -304,6 +322,7 @@
           - strace
           - ltrace
           - python-pwntools
+          - python-uncompyle6
           - ropper
           - ropgadget
         state: present

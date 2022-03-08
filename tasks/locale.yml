@@ -1,15 +1,14 @@
 ---
-- name: setup locale.gen
-  blockinfile:
-    path: /etc/locale.gen
-    block: |
-      en_GB.UTF-8 UTF-8
-      ru_RU.UTF-8 UTF-8
-    marker: "# {mark} ANSIBLE MANAGED BLOCK"
-  become: yes
 
-- name: generate locales
-  shell: locale-gen
+- name: generate en_GB.UTF-8
+  locale_gen:
+    name: en_GB.UTF-8
+    state: present
+  become: yes
+- name: generate ru_RU.UTF-8
+  locale_gen:
+      name: ru_RU.UTF-8
+      state: present
   become: yes
 
 - name: set locale

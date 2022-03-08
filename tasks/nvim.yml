@@ -17,6 +17,8 @@
     state: present
 
 - name: update nvim plug
-  shell: "nvim -c 'PlugUpdate | q | q'"
+  shell: 
+    cmd: "nvim -c 'PlugUpdate | q | q'"
+    creates: "/home/falamous/{{ username }}/.local/share/nvim/plugged"
   register: nvim_update_plug
   changed_when: "'Cloning' in nvim_update_plug.stdout"
