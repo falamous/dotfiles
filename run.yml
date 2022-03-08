@@ -9,6 +9,8 @@
           [user]
               email = falamous@mail.ru
               name = falamous
+          [core]
+            editor = nvim
         dest: '/home/{{ username }}/.gitconfig'
     - name: edit pacman.conf
       blockinfile:
@@ -45,6 +47,10 @@
         src: '/home/{{username}}/{{ repo_location }}/scripts'
         dest: '/home/{{ username }}/scripts'
         state: link
+    - name: create ~/wq
+      file:
+        name: '/home/{{ username }}/wq'
+        state: directory
     - name: zshenv
       copy:
         content: 'source ~/.config/zsh/zshenv'
@@ -85,14 +91,12 @@
   connection: local
   tasks:
     - name: setup timezone
-      file:
-        src: /usr/share/zoneinfo/Europe/Moscow
-        dest: /etc/localtime
-        state: link 
+      timezone:
+        name: Europe/Moscow
+        hwclock: UTC
       become: yes
 
     - import_tasks: tasks/locale.yml
-
 
     - name: xorg
       loop:
@@ -148,6 +152,7 @@
         - bind
         - iputils
         - gnu-netcat
+        - nmap
         - socat
         - net-tools
         - ntp
@@ -175,6 +180,7 @@
     - name: python and python libs
       loop:
         - python
+        - python-pip
         - python-gmpy2
         - python-flask
         - python-django
@@ -196,6 +202,8 @@
     - name: programming languages
       loop:
         - nodejs
+        - npm
+        - yarn
         - php
         - gcc
         - go
@@ -205,6 +213,22 @@
         - pypy3
       include_role:
         name: aur_install
+
+    - name: create .config/npm
+      file:
+        name: "/home/{{ username }}/.config/npm"
+        state: directory
+
+    - name: edit npmrc
+      blockinfile:
+        path: "/home/{{ username }}/.config/npm/pmrc"
+        block: |
+          prefix=${XDG_DATA_HOME}/npm
+          cache=${XDG_CACHE_HOME}/npm
+          tmp=${XDG_RUNTIME_DIR}/npm
+          init-module=${XDG_CONFIG_HOME}/npm/npm-init.js
+        marker: "// {mark} ANSIBLE MANAGED BLOCK"
+        create: yes
 
     - name: qemu and crosscompiling
       loop:
@@ -216,6 +240,7 @@
         name: aur_install
 
     - import_tasks: tasks/tabbed.yml
+    - import_tasks: tasks/slock.yml
 
     - name: daemons
       loop:
@@ -236,10 +261,13 @@
 
     - name: cli utilities
       loop:
+        - man
+        - man-pages
         - ripgrep
         - lsd
         - zip
         - unzip
+        - evtest
         - p7zip
         - wget
         - aria2
@@ -249,6 +277,14 @@
         - bootiso
       include_role:
         name: aur_install
+
+    - name: create .config/wgetrc
+      blockinfile:
+        path: '/home/{{ username }}/.config/wgetrc'
+        block: "hsts-file = /home/{{ username }}/.cache/wget-hsts"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+        create: yes
+
 
     - name: add updatedb to cron
       cron:
@@ -277,6 +313,7 @@
         groups: 
           - wireshark
           - uucp
+          - proc
           - video
           - audio
           - docker
@@ -357,7 +394,7 @@
     - import_tasks: tasks/mpd.yml
 
     - name: update time
-      shell: "ntpdate pool.ntp.org"
+      shell: "ntpdate pool.ntp.org && hwclock -w"
       become: yes
 
     - name: browsers
@@ -369,5 +406,16 @@
       include_role:
         name: aur_install
 
-     # - name: set firefox as default browser 
-     #   shell: "firefox --setDefaultBrowser"
+    - import_tasks: tasks/pass.yml
+
+    - name: cleanup .cargo
+      file:
+        name: '/home/{{ username }}/.cargo'
+        state: absent
+
+    - name: cleanup .bash_history
+      file:
+        name: '/home/{{ username }}/.bash_history'
+        state: absent
+    # - name: set firefox as default browser 
+    #   shell: "firefox --setDefaultBrowser"

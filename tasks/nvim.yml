@@ -3,7 +3,10 @@
   loop:
     - neovim
     - neovim-plug
-    - nodejs # For Coc
+    # for Coc
+    - nodejs
+    - npm
+    - yarn
     # Coc language servers
     - ccls
     - gopls

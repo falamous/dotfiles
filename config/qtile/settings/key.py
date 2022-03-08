@@ -59,6 +59,7 @@ keys = [
     Key([mod], "r", lazy.spawn("flameshot gui"), desc="Take a screenshot"),
     Key([mod, "shift"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([mod, "shift"], "s", lazy.spawn("slock"), desc="Lock screen"),
     Key(
         [mod],
         "p",

@@ -1,0 +1,24 @@
+---
+- name: clone slock
+  git:
+    repo: https://github.com/falamous/slock
+    dest: "/home/{{ username }}/src/slock"
+
+- name: install xautolock
+  loop:
+    - xautolock
+  include_role:
+    name: aur_install
+
+- name: compile and install slock
+  shell:
+    chdir: "/home/{{ username }}/src/slock"
+    cmd: "make install"
+    creates: "/usr/local/bin/slock"
+  become: yes
+
+- name: set slock to be suid
+  file:
+    name: "/usr/local/bin"
+    mode: +s
+  become: yes

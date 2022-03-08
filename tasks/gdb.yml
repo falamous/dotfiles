@@ -7,7 +7,7 @@
   include_role:
     name: aur_install
 
-- name: 
+- name: enable gef
   blockinfile:
     path: "/etc/gdb/gdbinit"
     block: |

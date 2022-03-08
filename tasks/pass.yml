@@ -1,0 +1,15 @@
+---
+- name: install pass and plugins for firefox and git
+  loop:
+    - pass
+    - pass-git-helper
+    - firefox-extension-passff
+  include_role:
+    name: aur_install
+
+- name: set git credential helper
+  ini_file:
+    path: "/home/{{ username }}/.gitconfig"
+    section: credential
+    option: helper
+    value: "/usr/bin/pass-git-helper"

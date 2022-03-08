@@ -95,9 +95,10 @@ Plug 'andreasvc/vim-256noir'
 Plug 'rakr/vim-two-firewatch'
 
 " Coc extensions
-" Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
-" Plug 'neoclide/fannheyward/coc-texlab', {'do': 'yarn install --frozen-lockfile'}
-" Plug 'neoclide/fannheyward/coc-pyright', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-tsserver',    {'do': 'yarn install --frozen-lockfile'}
+Plug 'fannheyward/coc-texlab',   {'do': 'yarn install --frozen-lockfile'}
+Plug 'fannheyward/coc-pyright',  {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-sources',     {'do': 'yarn install --frozen-lockfile', 'rtp': 'packages/word'}
 call plug#end()
 
 

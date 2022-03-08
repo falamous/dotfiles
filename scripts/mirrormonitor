@@ -1,6 +1,5 @@
 #!/bin/sh
 
-{
 internal_regex=eDP
 
 function get_connected_outputs() {
@@ -56,4 +55,3 @@ done
 
 setupkeys
 wallpaper
-} 2>&1 | llog
