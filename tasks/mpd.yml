@@ -1,11 +1,11 @@
 ---
 - name: install mpd
-  loop:
-    - mpd
-    - ncmpcpp
-    - python-mpd2
-  include_role:
-    name: aur_install
+  kewlfft.aur.aur:
+    name:
+      - mpd
+      - ncmpcpp
+      - python-mpd2
+    state: present
 
 - name: enable mpd
   systemd:

@@ -5,10 +5,9 @@
     dest: "/home/{{ username }}/src/slock"
 
 - name: install xautolock
-  loop:
-    - xautolock
-  include_role:
-    name: aur_install
+  kewlfft.aur.aur:
+    name: xautolock
+    state: present
 
 - name: compile and install slock
   shell:

@@ -1,20 +1,20 @@
 ---
 - name: install nvim and external programms
-  loop:
-    - neovim
-    - neovim-plug
-    # for Coc
-    - nodejs
-    - npm
-    - yarn
-    # Coc language servers
-    - ccls
-    - gopls
-    - rust-analyzer
-    - texlab
-    - pyright
-  include_role:
-    name: aur_install
+  kewlfft.aur.aur:
+    name:
+      - neovim
+      - neovim-plug
+      # for Coc
+      - nodejs
+      - npm
+      - yarn
+      # Coc language servers
+      - ccls
+      - gopls
+      - rust-analyzer
+      - texlab
+      - pyright
+    state: present
 
 - name: update nvim plug
   shell: "nvim -c 'PlugUpdate | q | q'"

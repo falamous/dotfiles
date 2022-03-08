@@ -1,11 +1,11 @@
 ---
 - name: install zsh and extensions
-  loop:
-    - zsh
-    - zsh-syntax-highlighting
-    - zsh-autosuggestions
-  include_role:
-    name: aur_install
+  kewlfft.aur.aur:
+    name:
+      - zsh
+      - zsh-syntax-highlighting
+      - zsh-autosuggestions
+    state: present
 
 - name: make zsh the default shell
   user:

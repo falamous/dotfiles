@@ -1,9 +1,8 @@
 ---
 - name: install ly
-  loop:
-    - ly
-  include_role:
-    name: aur_install
+  kewlfft.aur.aur:
+    name: ly
+    state: present
 
 - name: enable ly
   systemd:

@@ -1,11 +1,11 @@
 ---
 - name: install pass and plugins for firefox and git
-  loop:
-    - pass
-    - pass-git-helper
-    - firefox-extension-passff
-  include_role:
-    name: aur_install
+  kewlfft.aur.aur:
+    name:
+      - pass
+      - pass-git-helper
+      - firefox-extension-passff
+    state: present
 
 - name: set git credential helper
   ini_file:

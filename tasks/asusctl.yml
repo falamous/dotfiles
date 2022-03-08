@@ -1,9 +1,8 @@
 ---
 - name: install asusctl
-  loop:
-    - asusctl
-  include_role:
-    name: aur_install
+  kewlfft.aur.aur:
+    name: asusctl
+    state: present
 
 - name: enable and start asusd
   systemd:

@@ -1,11 +1,11 @@
 ---
 - name: install gdb and gef
-  loop:
-    - gdb
-    # - gdb-multiarch
-    - gef-git
-  include_role:
-    name: aur_install
+  kewlfft.aur.aur:
+    name:
+      - gdb
+      # - gdb-multiarch
+      - gef-git
+    state: present
 
 - name: enable gef
   blockinfile:

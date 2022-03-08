@@ -99,31 +99,31 @@
     - import_tasks: tasks/locale.yml
 
     - name: xorg
-      loop:
-        - xorg
-        - xclip
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - xorg
+          - xclip
+        state: present
 
     - name: window manager and graphical tools
-      loop:
-        - qtile
-        - python-xlib
-        - picom
-        - unclutter
-        - dunst
-        - light
-        - rofi
-        - rofi-greenclip
-        - flameshot
-        - sxiv
-        - mpv
-        - xwallpaper
-        - pinta
-        - alacritty
-        - xdg-user-dirs
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - qtile
+          - python-xlib
+          - picom
+          - unclutter
+          - dunst
+          - light
+          - rofi
+          - rofi-greenclip
+          - flameshot
+          - sxiv
+          - mpv
+          - xwallpaper
+          - pinta
+          - alacritty
+          - xdg-user-dirs
+        state: present
 
     - name: create ~/downloads
       file:
@@ -137,82 +137,83 @@
     - import_tasks: tasks/zsh.yml
 
     - name: fonts
-      loop:
-        - ttf-courier-prime-code
-        - adobe-source-code-pro-fonts
-        - ttf-nerd-fonts-symbols
-        - ttf-symbola
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - ttf-courier-prime-code
+          - adobe-source-code-pro-fonts
+          - ttf-nerd-fonts-symbols
+          - ttf-symbola
+        state: present
 
     - name: net tools
-      loop:
-        - iw
-        - wpa_supplicant
-        - bind
-        - iputils
-        - gnu-netcat
-        - nmap
-        - socat
-        - net-tools
-        - ntp
-        - wireshark-qt
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - iw
+          - wpa_supplicant
+          - bind
+          - iputils
+          - gnu-netcat
+          - nmap
+          - socat
+          - net-tools
+          - ntp
+          - wireshark-qt
+        state: present
 
     - import_tasks: tasks/gdb.yml
 
     - name: z3
-      loop:
-        - z3
-        - python-z3
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - z3
+          - python-z3
+        state: present
 
     - name: tesseract
-      loop:
-        - tesseract
-        - tesseract-data-rus
-        - python-pyocr
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - tesseract
+          - tesseract-data-rus
+          - python-pyocr
+        state: present
 
     - name: python and python libs
-      loop:
-        - python
-        - python-pip
-        - python-gmpy2
-        - python-flask
-        - python-django
-        - python-numpy
-        - python-sympy
-        - python-psutil
-        - ipython
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - python
+          - python-pip
+          - python-gmpy2
+          - python-flask
+          - python-django
+          - python-numpy
+          - python-sympy
+          - python-psutil
+          - ipython
+        state: present
 
     - name: python and python libs
-      loop:
-        - wine
-        - wine-mono
-        - wine-gecko
-      include_role:
-        name: aur_install
-
+      kewlfft.aur.aur:
+        name:
+          - wine
+          - wine-mono
+          - wine-gecko
+        state: present
+ 
     - name: programming languages
-      loop:
-        - nodejs
-        - npm
-        - yarn
-        - php
-        - gcc
-        - go
-        - clang
-        - ruby
-        - python2
-        - pypy3
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - nodejs
+          - npm
+          - yarn
+          - php
+          - gcc
+          - go
+          - cuda
+          - clang
+          - ruby
+          - python2
+          - pypy3
+        state: present
 
     - name: create .config/npm
       file:
@@ -231,25 +232,25 @@
         create: yes
 
     - name: qemu and crosscompiling
-      loop:
-        - qemu
-        - qemu-arch-extra
-        - aarch64-linux-gnu-gcc
-        - aarch64-linux-gnu-binutils
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - qemu
+          - qemu-arch-extra
+          - aarch64-linux-gnu-gcc
+          - aarch64-linux-gnu-binutils
+        state: present
 
     - import_tasks: tasks/tabbed.yml
     - import_tasks: tasks/slock.yml
 
     - name: daemons
-      loop:
-        - cronie
-        - tor
-        - docker
-        - docker-compose
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - cronie
+          - tor
+          - docker
+          - docker-compose
+        state: present
 
     - name: enable cronie
       systemd:
@@ -260,23 +261,23 @@
       become: yes
 
     - name: cli utilities
-      loop:
-        - man
-        - man-pages
-        - ripgrep
-        - lsd
-        - zip
-        - unzip
-        - evtest
-        - p7zip
-        - wget
-        - aria2
-        - pv
-        - imagemagick
-        - mlocate
-        - bootiso
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - man
+          - man-pages
+          - ripgrep
+          - lsd
+          - zip
+          - unzip
+          - evtest
+          - p7zip
+          - wget
+          - aria2
+          - pv
+          - imagemagick
+          - mlocate
+          - bootiso
+        state: present
 
     - name: create .config/wgetrc
       blockinfile:
@@ -294,18 +295,18 @@
       become: yes
 
     - name: reverse and pwn stuff
-      loop:
-        - radare2
-        - r2ghidra
-        - ghidra
-        - ropper
-        - strace
-        - ltrace
-        - python-pwntools
-        - ropper
-        - ropgadget
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - radare2
+          - r2ghidra
+          - ghidra
+          - ropper
+          - strace
+          - ltrace
+          - python-pwntools
+          - ropper
+          - ropgadget
+        state: present
 
     - name: add the user to useful groups
       user:
@@ -323,21 +324,21 @@
       become: yes
 
     - name: install pipewire, extensions and related packages
-      loop:
-        - pipewire
-        - pipewire-pulse
-        - pipewire-alsa
-        - pulsemixer
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - pipewire
+          - pipewire-pulse
+          - pipewire-alsa
+          - pulsemixer
+        state: present
 
     - name: communication apps
-      loop:
-        - telegram-desktop
-        - discord
-        - vk-messenger
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - telegram-desktop
+          - discord
+          - vk-messenger
+        state: present
 
     - name: copy macgen (mac address randomization script)
       copy:
@@ -398,13 +399,13 @@
       become: yes
 
     - name: browsers
-      loop:
-        - torbrowser-launcher
-        - chromium
-        - firefox
-        - google-chrome
-      include_role:
-        name: aur_install
+      kewlfft.aur.aur:
+        name:
+          - torbrowser-launcher
+          - chromium
+          - firefox
+          - google-chrome
+        state: present
 
     - import_tasks: tasks/pass.yml
 
