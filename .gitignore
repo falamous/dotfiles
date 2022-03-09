@@ -127,3 +127,21 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# configurations
+config/yay
+config/VK
+config/QtProject.conf
+config/pulse
+config/mimeapps.list
+config/menus
+config/light
+config/ipython
+config/greenclip.toml
+config/fontforge
+config/discord
+config/dconf
+config/chromium
+config/npm
+config/coc
+config/wgetrc
