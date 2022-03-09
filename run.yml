@@ -42,22 +42,22 @@
       become: yes
     - name: link xinitrc
       file:
-        src: '/home/{{username}}/{{ repo_location }}/xinitrc'
+        src: '{{ playbook_dir }}/xinitrc'
         dest: '/home/{{ username }}/.xinitrc'
         state: link
     - name: link Xresources
       file:
-        src: '/home/{{username}}/{{ repo_location }}/Xresources'
+        src: '{{ playbook_dir }}/Xresources'
         dest: '/home/{{ username }}/.Xresources'
         state: link
     - name: link config
       file:
-        src: '/home/{{username}}/{{ repo_location }}/config'
+        src: '{{ playbook_dir }}/config'
         dest: '/home/{{ username }}/.config'
         state: link
     - name: link scripts
       file:
-        src: '/home/{{username}}/{{ repo_location }}/scripts'
+        src: '{{ playbook_dir }}/scripts'
         dest: '/home/{{ username }}/scripts'
         state: link
     - name: create ~/wq
@@ -156,6 +156,7 @@
           - gtk2
           - sdl
           - clang
+          - cmake
           - ruby
           - python2
           - pypy3
@@ -168,7 +169,7 @@
 
     - name: edit npmrc
       blockinfile:
-        path: "/home/{{ username }}/.config/npm/pmrc"
+        path: "/home/{{ username }}/.config/npm/npmrc"
         block: |
           prefix=${XDG_DATA_HOME}/npm
           cache=${XDG_CACHE_HOME}/npm
@@ -177,19 +178,27 @@
         marker: "// {mark} ANSIBLE MANAGED BLOCK"
         create: yes
 
+    - name: copy .gtkrc-2.0
+      copy:
+        src: "{{ playbook_dir }}/config/gtk-2.0/gtkrc-2.0"
+        dest: "/home/{{ username }}/.gtkrc-2.0"
+
     - import_tasks: tasks/ly.yml
 
     - import_tasks: tasks/nvim.yml
 
     - import_tasks: tasks/zsh.yml
 
-    - name: fonts
+    - name: fonts and themes
       kewlfft.aur.aur:
         name:
           - ttf-courier-prime-code
           - adobe-source-code-pro-fonts
           - ttf-nerd-fonts-symbols
           - ttf-symbola
+          - xcursor-hacked-white
+          - materia-gtk-theme
+          - kvantum
         state: present
 
     - name: net tools
@@ -236,6 +245,7 @@
           - python-numpy
           - python-sympy
           - python-psutil
+          - python-pyperclip
           - ipython
         state: present
 
@@ -303,6 +313,13 @@
         block: "hsts-file = /home/{{ username }}/.cache/wget-hsts"
         marker: "# {mark} ANSIBLE MANAGED BLOCK"
         create: yes
+
+    - name: disable account locking after 3 wrong passwords
+      blockinfile:
+        path: '/etc/security/faillock.conf'
+        block: "deny = 31337"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      become: yes
 
 
     - name: add updatedb to cron

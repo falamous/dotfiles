@@ -47,6 +47,7 @@ export ANDROID_AVD_HOME="$XDG_DATA_HOME/android/"
 export ANDROID_EMULATOR_HOME="$XDG_DATA_HOME/android/"
 export ADB_VENDOR_KEY="$XDG_CONFIG_HOME/android"
 
+export XINITRC="$XDG_CONFIG_HOME/xinitrc"
 export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 # echo hsts-file \= "$XDG_CACHE_HOME"/wget-hsts >> "$XDG_CONFIG_HOME/wgetrc"
 
@@ -60,14 +61,11 @@ export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
 export VSCODE_PORTABLE="$XDG_DATA_HOME/vscode"
 
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
-# mkdir -p "$XDG_CONFIG_HOME/npm"
-# echo 'prefix=${XDG_DATA_HOME}/npm' >>$NPM_CONFIG_USERCONFIG
-# echo 'cache=${XDG_CACHE_HOME}/npm' >>$NPM_CONFIG_USERCONFIG
-# echo 'tmp=${XDG_RUNTIME_DIR}/npm' >>$NPM_CONFIG_USERCONFIG
-# echo 'init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js' >>$NPM_CONFIG_USERCONFIG
+export GDBHISTFILE="$XDG_CACHE_HOME/gdb_history"
    
 export QT_STYLE_OVERRIDE="kvantum-dark"
 export QT_QPA_PLATFORMTHEME="qt5ct"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
 
 export GOPATH="$XDG_DATA_HOME/go"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
