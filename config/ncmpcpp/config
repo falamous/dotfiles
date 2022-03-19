@@ -15,9 +15,9 @@ playlist_display_mode = "columns"
 ## General Colors ##
 colors_enabled = "yes"
 main_window_color = "cyan"
-header_window_color = "black"
+header_window_color = "magenta"
 volume_color = "cyan"
-statusbar_color = "black"
+statusbar_color = "magenta"
 progressbar_color = "black"
 progressbar_elapsed_color = "cyan"
 
@@ -46,7 +46,7 @@ visualizer_in_stereo = "yes"
 visualizer_type = "spectrum"
 visualizer_look = "◆▋"
 visualizer_spectrum_smooth_look="no"
-visualizer_color="black"
+visualizer_color="cyan"
 
 ## navigation ##
 cyclic_scrolling = "yes"

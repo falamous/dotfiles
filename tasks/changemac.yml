@@ -1,0 +1,49 @@
+---
+- name: copy macgen (mac address randomization script)
+  copy:
+    src: "{{ playbook_dir }}/scripts/macgen"
+    dest: "/bin/macgen"
+  become: yes
+
+- name: copy changemac (mac address change script)
+  copy:
+    src: "{{ playbook_dir }}/scripts/changemac"
+    dest: "/bin/changemac"
+  become: yes
+
+- name: make macgen executable
+  file:
+    name: "/bin/macgen"
+    mode: +x
+  become: yes
+
+- name: make changemac executable
+  file:
+    name: "/bin/changemac"
+    mode: +x
+  become: yes
+
+- name: check if macs_to_change exists
+  stat:
+    name: "/home/{{ username }}/share/macs_to_change"
+  register: macs_to_change
+
+- name: copy macs_to_change
+  copy:
+    src: "/home/{{ username }}/share/macs_to_change"
+    dest: "/etc/macs_to_change"
+  when: macs_to_change.stat.exists
+  become: yes
+
+- name: enable mac-randomization script
+  cron:
+    name: macgen
+    day: 13
+    job: macgen
+  become: yes
+
+- name: ensure macs were changed
+  shell:
+    cmd: "macgen"
+    creates: "/etc/udev/rules.d/75-mac-spoof.rules"
+  become: yes

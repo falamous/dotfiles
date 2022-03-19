@@ -2,11 +2,12 @@
 - name: clone tabbed
   git:
     repo: https://github.com/falamous/tabbed
-    dest: "/home/{{ username }}/tabbed"
+    dest: "/home/{{ username }}/src/tabbed"
+  register: tabbed
 
 - name: compile and install tabbed
-  shell:
-    chdir: "/home/{{ username }}/tabbed"
-    cmd: "make install"
-    creates: "/usr/local/bin/tabbed"
+  make:
+    chdir: "/home/{{ username }}/src/tabbed"
+    target: install
+  when: tabbed.changed
   become: yes

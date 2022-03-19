@@ -8,6 +8,7 @@ dunst &                             # notifications
 light -S 40                         # screen brightness
 greenclip daemon &                  # clipboard manager
 xautolock -time 10 -locker slock &  # screen locker
+mpd                                 # music player daemon
 # bling &                             # for AnimeMatrix
 
 

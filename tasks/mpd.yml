@@ -5,11 +5,17 @@
       - mpd
       - ncmpcpp
       - python-mpd2
+      - mpc
     state: present
+
+- name: ensure .config/systemd directory exists
+  file:
+    name: "/home/{{ username }}/.config/systemd/user/default.target.wants"
+    state: directory
 
 - name: enable mpd
   systemd:
     name: mpd
     enabled: yes
+    scope: user
     masked: no
-  become: yes

@@ -5,6 +5,7 @@ alias fgrep='grep -F --color=auto'
 alias grep='grep --color=auto'
 alias ls='lsd'
 alias l='lsd -al'
+alias cat='bat --paging=never'
 alias rg='rg --binary -n -H --no-heading'
 alias m='ncmpcpp -S visualizer'
 
@@ -24,6 +25,8 @@ alias ydl='youtube-dl'
 alias gc='git clone'
 alias logout='pkill xinit'
 alias john='HOME=$XDG_DATA_HOME john'
+alias tor='sudo systemctl start tor && sudo systemctl start privoxy'
+
 
 function de() {
     # docker enter
@@ -81,5 +84,5 @@ alias hl='highlight -O xterm256'
 alias pathfiles='find $(echo $PATH | sed "s|:|/ |g") -type f 2>/dev/null'
 alias save_file='tgfile Шизофрения'
 alias save_text='tgmsg Шизофрения'
-# alias aria2c='http_proxy=http://localhost:8118 https_proxy=http://localhost:8118 ftp_proxy=http://localhost:8118 ftps_proxy=http://localhost:8118 rsync_proxy=http://localhost:8118 aria2c'
+alias aria2c='http_proxy=http://localhost:8118 https_proxy=http://localhost:8118 ftp_proxy=http://localhost:8118 ftps_proxy=http://localhost:8118 rsync_proxy=http://localhost:8118 aria2c'
 alias recordscreen='ffmpeg -video_size 1920x1080 -framerate 60 -f x11grab -i :0.0'

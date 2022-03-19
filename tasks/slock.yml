@@ -1,19 +1,20 @@
 ---
-- name: clone slock
-  git:
-    repo: https://github.com/falamous/slock
-    dest: "/home/{{ username }}/src/slock"
-
 - name: install xautolock
   kewlfft.aur.aur:
     name: xautolock
     state: present
 
+- name: clone slock
+  git:
+    repo: https://github.com/falamous/slock
+    dest: "/home/{{ username }}/src/slock"
+  register: slock
+
 - name: compile and install slock
   shell:
     chdir: "/home/{{ username }}/src/slock"
-    cmd: "make install"
-    creates: "/usr/local/bin/slock"
+    target: install
+  when: slock.changed
   become: yes
 
 - name: set slock to be suid

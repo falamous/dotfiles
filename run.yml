@@ -40,6 +40,7 @@
         update_cache: yes
       when: pacman_conf.changed
       become: yes
+
     - name: link xinitrc
       file:
         src: '{{ playbook_dir }}/xinitrc'
@@ -60,14 +61,24 @@
         src: '{{ playbook_dir }}/scripts'
         dest: '/home/{{ username }}/scripts'
         state: link
+
     - name: create ~/wq
       file:
         name: '/home/{{ username }}/wq'
         state: directory
+
     - name: zshenv
       copy:
         content: 'source ~/.config/zsh/zshenv'
         dest: '/home/{{ username }}/.zshenv'
+
+    - name: install base-devel and git for yay
+      pacman:
+        name:
+          - base-devel
+          - git
+        state: present
+      become: yes
     - name: install yay
       kewlfft.aur.aur:
         name: yay
@@ -77,6 +88,7 @@
       kewlfft.aur.aur:
         name: rsync
         state: present
+
     # - name: copy ~/ files
     #   synchronize:
     #     src: "{{ home_files_location }}"
@@ -85,17 +97,65 @@
     # - name: chown ~/ files
     #   file:
     #     path: "/home/{{ username }}"
-    #     owner: falamous
+    #     owner: {{ username }}
     #     recurse: yes
     #   become: yes
-    - name: create share/mozilla
+
+    - name: create share
       file:
-        name: '/home/{{username}}/share/mozilla'
+        name: "/home/{{ username }}/share"
         state: directory
-    - name: link mozilla
+    - name: create src
       file:
-        src: '/home/{{username}}/share/mozilla'
-        dest: '/home/{{ username }}/.mozilla'
+        name: "/home/{{ username }}/share/src"
+        state: directory
+    - name: create ssh
+      file:
+        name: "/home/{{ username }}/share/ssh"
+        state: directory
+    - name: create local
+      file:
+        name: "/home/{{ username }}/share/.local"
+        state: directory
+    - name: link src
+      file:
+        src:  "/home/{{ username }}/share/src"
+        dest: "/home/{{ username }}/src"
+        state: link
+    - name: link tools
+      file:
+        src:  "/home/{{ username }}/share/tools"
+        dest: "/home/{{ username }}/tools"
+        state: link
+    - name: link .ssh
+      file:
+        src:  "/home/{{ username }}/share/ssh"
+        dest: "/home/{{ username }}/.ssh"
+        state: link
+
+    - name: stat .local
+      stat:
+        name: "/home/{{ username }}/.local"
+      register: dot_local_stat
+    - name: sync .local
+      synchronize:
+        perms: yes
+        recursive: yes
+        src:  "/home/{{ username }}/.local"
+        dest: "/home/{{ username }}/share/local"
+      when: "dot_local_stat.stat.lnk_source is not defined or
+        dot_local_stat.stat.lnk_source != '/home/' + username + '/share/local'"
+    - name: remove .locale
+      file:
+        name: "/home/{{ username }}/.local"
+        state: absent
+      when: "dot_local_stat.stat.lnk_source is not defined or
+        dot_local_stat.stat.lnk_source != '/home/' + username + '/share/local'"
+
+    - name: link .local
+      file:
+        src:  "/home/{{ username }}/share/local"
+        dest: "/home/{{ username }}/.local"
         state: link
 
 - name: install and configure packages
@@ -130,6 +190,10 @@
           - rofi-greenclip
           - flameshot
           - sxiv
+          - zathura
+          - zathura-pdf-mupdf
+          - zathura-djvu
+          - zathura-ps
           - mpv
           - xwallpaper
           - pinta
@@ -274,9 +338,31 @@
         name:
           - cronie
           - tor
+          - obfs4proxy
+          - torsocks
+          - privoxy
           - docker
           - docker-compose
         state: present
+
+    - name: configure privoxy
+      blockinfile:
+        path: '/etc/privoxy/config'
+        block: "forward-socks5 / localhost:9050 ."
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+        create: yes
+      become: yes
+
+    - name: configure tor
+      blockinfile:
+        path: '/etc/tor/torrc'
+        block: |
+          ClientTransportPlugin obfs4 exec /usr/bin/obfs4proxy
+          ExtORPort auto
+          UseBridges 1
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+        create: yes
+      become: yes
 
     - name: enable cronie
       systemd:
@@ -302,9 +388,13 @@
           - wget
           - aria2
           - pv
+          - bat
           - imagemagick
           - mlocate
           - bootiso
+          - openssh
+          - sshpass
+          - neofetch
         state: present
 
     - name: create .config/wgetrc
@@ -376,23 +466,7 @@
           - vk-messenger
         state: present
 
-    - name: copy macgen (mac address randomization script)
-      copy:
-        src: "scripts/macgen"
-        dest: "/bin/macgen"
-      become: yes
-    - name: copy changemac (mac address change script)
-      copy:
-        src: "scripts/changemac"
-        dest: "/bin/changemac"
-      become: yes
-
-    - name: enable mac-randomization script
-      cron:
-        name: macgen
-        day: 13
-        job: macgen
-      become: yes
+    - import_tasks: tasks/changemac.yml
 
     - name: edit root bashrc
       blockinfile:
@@ -427,12 +501,10 @@
         create: yes
       become: yes
 
-    - import_tasks: tasks/asusctl.yml
+    - import_tasks: tasks/laptop.yml
     - import_tasks: tasks/mpd.yml
 
-    - name: update time
-      shell: "ntpdate pool.ntp.org && hwclock -w"
-      become: yes
+
 
     - name: browsers
       kewlfft.aur.aur:
@@ -443,7 +515,23 @@
           - google-chrome
         state: present
 
+    - name: create share/mozilla
+      file:
+        name: '/home/{{ username }}/share/mozilla'
+        state: directory
+    - name: link mozilla
+      file:
+        src: '/home/{{ username }}/share/mozilla'
+        dest: '/home/{{ username }}/.mozilla'
+        state: link
+
     - import_tasks: tasks/pass.yml
+    
+    - import_tasks: tasks/virtualbox.yml
+
+    # - name: update time
+    #   shell: "ntpdate pool.ntp.org && hwclock -w"
+    #   become: yes
 
     - name: cleanup .cargo
       file:

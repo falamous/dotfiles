@@ -3,8 +3,10 @@ import secrets
 import binascii
 
 
-with open("/home/falamous/share/macs_to_change") as f:
-    MACS = f.readlines()
+with open("/etc/macs_to_change") as f:
+    MACS = [
+            l.strip() for l in f.readlines()
+            ]
 
 RULE_TEMPLATE = (
         'ACTION=="add",'

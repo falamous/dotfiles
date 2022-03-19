@@ -145,3 +145,13 @@ config/chromium
 config/npm
 config/coc
 config/wgetrc
+config/VirtualBox
+config/btop
+config/htop
+config/libreoffice
+config/neofetch
+config/Pinta
+config/systemd
+config/zoom
+config/zoomus.conf
+
