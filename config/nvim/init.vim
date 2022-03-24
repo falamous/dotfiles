@@ -59,6 +59,7 @@ autocmd BufReadPost *
 set undofile
 " set undodir=stdpath('cache') . '/undo'
 
+
 call plug#begin(stdpath('data') . '/plugged')
 " Plug 'preservim/nerdtree'                            " file management, that I don't use
 Plug 'lambdalisue/nerdfont.vim'
@@ -100,7 +101,6 @@ Plug 'fannheyward/coc-texlab',   {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-pyright',  {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-sources',     {'do': 'yarn install --frozen-lockfile', 'rtp': 'packages/word'}
 call plug#end()
-
 
 " Netrw configuration
 " let g:netrw_liststyle = 3
@@ -176,6 +176,7 @@ autocmd FileType c set tabstop=8|set shiftwidth=8
 autocmd FileType ruby set tabstop=8|set shiftwidth=4
 autocmd FileType yaml set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd FileType nroff set noexpandtab
+autocmd FileType asm setlocal commentstring=//\ %s
 
 set termguicolors
 " theme
