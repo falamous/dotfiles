@@ -23,7 +23,7 @@ groups = [
         dropdowns=[
             DropDown(
                 "kek",
-                f"tabbed -c -n {scratchpad_id} alacritty --class {scratchpad_id} --embed",
+                f"tabbed -c -n {scratchpad_id} alacritty --embed",
                 match=Match(wm_class=[scratchpad_id]),
                 opacity=1,
                 y=0.05,
