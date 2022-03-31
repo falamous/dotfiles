@@ -468,13 +468,12 @@
 
     - import_tasks: tasks/changemac.yml
 
-    - name: edit root bashrc
-      blockinfile:
-        path: /root/.bashrc
-        block: |
-          export EDITOR=nvim
-        marker: "# {mark} ANSIBLE MANAGED BLOCK"
-        create: yes
+    - name: link /bin/vi to neovim
+      file:
+        src: /bin/nvim
+        dest: /bin/vi
+        state: link
+        force: yes
       become: yes
 
     - name: edit hwdb (CAPS to escape)
