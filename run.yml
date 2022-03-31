@@ -148,8 +148,8 @@
         recursive: yes
         src:  "/home/{{ username }}/.local"
         dest: "/home/{{ username }}/share/local"
-      when: "dot_local_stat.stat.lnk_source is not defined or
-        dot_local_stat.stat.lnk_source != '/home/' + username + '/share/local'"
+      when: "dot_local_stat.stat.exists and (dot_local_stat.stat.lnk_source is not defined or
+        dot_local_stat.stat.lnk_source != '/home/' + username + '/share/local')"
     - name: remove .locale
       file:
         name: "/home/{{ username }}/.local"
