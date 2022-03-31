@@ -1,12 +1,6 @@
 #!/bin/python
 import secrets
-import binascii
 
-
-with open("/etc/macs_to_change") as f:
-    MACS = [
-            l.strip() for l in f.readlines()
-            ]
 
 RULE_TEMPLATE = (
         'ACTION=="add",'
@@ -15,20 +9,30 @@ RULE_TEMPLATE = (
         'PROGRAM="/bin/changemac %(oldmac)s %(newmac)s"\n'
         )
 
+def main():
+    try:
+        with open("/etc/macs_to_change") as f:
+            macs = [
+                    l.strip() for l in f.readlines()
+                    ]
+    except FileNotFoundError:
+        macs = []
 
-def generate_random_mac():
-    mac = bytearray(secrets.token_bytes(6))
-    mac[0] &= 254
-    mac[1] &= 254
-    return ":".join(
-            hex(b)[2:].zfill(2) for b in mac
-            )
+    def generate_random_mac():
+        mac = bytearray(secrets.token_bytes(6))
+        mac[0] &= 254
+        mac[1] &= 254
+        return ":".join(
+                hex(b)[2:].zfill(2) for b in mac
+                )
 
 
-with open("/etc/udev/rules.d/75-mac-spoof.rules", "w") as f:
-    for mac in MACS:
-        f.write(RULE_TEMPLATE % {
-            "oldmac" : mac,
-            "newmac" : generate_random_mac(),
-            })
+    with open("/etc/udev/rules.d/75-mac-spoof.rules", "w") as f:
+        for mac in macs:
+            f.write(RULE_TEMPLATE % {
+                "oldmac" : mac,
+                "newmac" : generate_random_mac(),
+                })
 
+if __name__ == "__main__":
+    main()
