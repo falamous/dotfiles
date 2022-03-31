@@ -119,7 +119,7 @@
         state: directory
     - name: create local
       file:
-        name: "/home/{{ username }}/share/.local"
+        name: "/home/{{ username }}/share/local"
         state: directory
 
     - name: link src
