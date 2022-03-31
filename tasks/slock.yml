@@ -10,11 +10,16 @@
     dest: "/home/{{ username }}/src/slock"
   register: slock
 
+- name: stat /usr/local/bin/slock
+  stat:
+    path: /usr/local/bin/slock
+  register: bin_slock
+
 - name: compile and install slock
-  shell:
+  make:
     chdir: "/home/{{ username }}/src/slock"
     target: install
-  when: slock.changed
+  when: slock.changed or not bin_slock.stat.exists
   become: yes
 
 - name: set slock to be suid
