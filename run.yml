@@ -505,7 +505,16 @@
         create: yes
       become: yes
 
-    - import_tasks: tasks/laptop.yml
+    - name: stat /sys/devices/virtual/dmi/id/product_name
+      stat:
+        path: "/sys/devices/virtual/dmi/id/product_name"
+      register: dmi_product_name
+    - name: setup laptop specific tools
+      include_tasks: tasks/laptop.yml
+      when: "dmi_product_name.stat.exists and
+        'ROG Zephyrus' in lookup('file',
+        '/sys/devices/virtual/dmi/id/product_name')"
+
     - import_tasks: tasks/mpd.yml
 
 

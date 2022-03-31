@@ -35,11 +35,9 @@
 - name: configure battery charge limit
   shell: "asusctl -c {{ bat_charge_limit }}"
   when: "asusd_conf.bat_charge_limit is not defined or
-    asusd_conf.bat_charge_limit != bat_charge_limit
-    "
+    asusd_conf.bat_charge_limit != bat_charge_limit"
 
 - name: switch to integrated graphics
   shell: "supergfxctl -m {{ graphics_mode }}"
   when: "supergfxd_conf.mode is not defined or
     supergfxd_conf.mode != graphics_mode"
-
