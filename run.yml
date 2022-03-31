@@ -109,6 +109,10 @@
       file:
         name: "/home/{{ username }}/share/src"
         state: directory
+    - name: create tools
+      file:
+        name: "/home/{{ username }}/share/tools"
+        state: directory
     - name: create ssh
       file:
         name: "/home/{{ username }}/share/ssh"
@@ -117,6 +121,7 @@
       file:
         name: "/home/{{ username }}/share/.local"
         state: directory
+
     - name: link src
       file:
         src:  "/home/{{ username }}/share/src"
