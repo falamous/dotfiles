@@ -25,7 +25,7 @@ alias ydl='youtube-dl'
 alias gc='git clone'
 alias logout='pkill xinit'
 alias john='HOME=$XDG_DATA_HOME john'
-alias tor='sudo systemctl start tor && sudo systemctl start privoxy'
+alias tor='sudo systemctl restart tor && sudo systemctl restart privoxy'
 
 
 function de() {
