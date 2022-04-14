@@ -3,11 +3,13 @@ from functools import partial
 from libqtile import bar, widget
 from libqtile.config import Screen
 from .colors import *
-import itertools
 
 from Xlib import display as xdisplay
 
-POWERLINE_FONTSIZE = 40
+from .lang_widget import KeyboardLang
+from .current_layout_char import CurrentLayoutChar
+
+POWERLINE_FONTSIZE = 23
 POWERLINE_LEFT = "\ue0b0"
 POWERLINE_RIGHT = "\ue0b2"
 
@@ -63,12 +65,11 @@ def get_screen_count() -> int:
     else:
         return screen_count
 
-
 def make_bar() -> bar.Bar:
     global systray
     status_colors = [gray, black]
     widgets_left = [
-        [widget.CurrentLayout()],
+        [CurrentLayoutChar(fontsize=32)],
         [widget.GroupBox()],
         [widget.WindowName()],
     ]
@@ -86,12 +87,13 @@ def make_bar() -> bar.Bar:
                 step=5,
             ),
         ],
-        [
-            widget.Memory(
-                format="{MemUsed: .1f}/{MemTotal:.0f}{mm}",
-                measure_mem="G",
-            )
-        ],
+        [widget.Net(format="{total}")],
+        # [
+        #     widget.Memory(
+        #         format="{MemUsed: .1f}/{MemTotal:.0f}{mm}",
+        #         measure_mem="G",
+        #     )
+        # ],
         [
             widget.Battery(
                 charge_char="🔌",
@@ -105,7 +107,10 @@ def make_bar() -> bar.Bar:
                 format="{char}{percent:2.0%}",
             )
         ],
-        [widget.Clock(format="%d.%m.%Y %H:%M:%S")],
+        # [widget.Clock(format="%d.%m.%Y %H:%M:%S")],
+        [widget.Clock(format="%d.%m.%Y")],
+        [widget.Clock(format="%H:%M:%S")],
+        [KeyboardLang(update_interval=0.5)],
     ]
 
     if systray is None:
