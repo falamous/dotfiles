@@ -29,12 +29,24 @@
         path: /etc/pacman.conf
         block: |
           [options]
+          Color
           ParallelDownloads = 16
           [multilib]
           Include = /etc/pacman.d/mirrorlist
         marker: "# {mark} ANSIBLE MANAGED BLOCK"
       register: pacman_conf
       become: yes
+
+    - name: read /etc/pacman.conf
+      slurp:
+        src: /etc/pacman.conf
+      register: pacman_conf
+
+    - name: add blackarch repos
+      shell: 'sh -c "$(curl https://blackarch.org/strap.sh)"'
+      become: yes
+      when: '"blackarch" not in pacman_conf'
+
     - name: pacman -Sy
       pacman:
         update_cache: yes
@@ -186,6 +198,7 @@
       kewlfft.aur.aur:
         name:
           - qtile
+          - python-xkbgroup
           - python-xlib
           - picom
           - unclutter
@@ -270,7 +283,7 @@
           - kvantum
         state: present
 
-    - name: net tools
+    - name: internet tools
       kewlfft.aur.aur:
         name:
           - iw
@@ -283,6 +296,7 @@
           - net-tools
           - ntp
           - wireshark-qt
+          - gobuster
         state: present
 
     - import_tasks: tasks/gdb.yml
@@ -307,6 +321,7 @@
         name:
           - python
           - python-requests
+          - python-certifi
           - python-pip
           - python-gmpy2
           - python-flask
