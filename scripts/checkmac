@@ -1,0 +1,21 @@
+#!/bin/sh
+
+warn_about_mac_addr() {
+    notify-send -u critical "mac address $1 not changed"
+    not_changed_macs=$(expr "$not_changed_macs" + 1)
+}
+
+not_changed_macs=0
+
+while read -r addr
+do
+    ip addr | grep "$addr" && (
+        addr_changed=0
+        ip addr | grep -E "permaddr\s*$addr" || addr_changed=1
+        ip addr | grep -E "link/ether\s*$addr" && addr_changed=1
+
+        (exit "$addr_changed") || warn_about_mac_addr "$addr"
+    )
+done < /etc/macs_to_change
+
+exit $not_changed_macs

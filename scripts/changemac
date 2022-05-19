@@ -5,7 +5,7 @@ if [ "$#" -ne 2 ]; then
   exit 1
 fi
 
-device=$(ip addr | grep -B 1 "$1" | sed q | cut -d: -f 2)
+device=$(ip addr | grep -B 1 "$1" | sed q | cut -d: -f 2 | tr -d $' \t\n')
 
 /usr/bin/ip link set "$device" down
 /usr/bin/ip link set "$device" address "$2"
