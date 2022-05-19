@@ -45,7 +45,7 @@
     - name: add blackarch repos
       shell: 'sh -c "$(curl https://blackarch.org/strap.sh)"'
       become: yes
-      when: '"blackarch" not in pacman_conf'
+      when: '"blackarch" not in pacman_conf.content | b64decode'
 
     - name: pacman -Sy
       pacman:
@@ -337,6 +337,7 @@
       kewlfft.aur.aur:
         name:
           - wine
+          - unixodbc
           - wine-mono
           - wine-gecko
         state: present
@@ -448,6 +449,7 @@
           - ropper
           - strace
           - ltrace
+          - detect-it-easy
           - python-pwntools
           - python-uncompyle6
           - ropper
