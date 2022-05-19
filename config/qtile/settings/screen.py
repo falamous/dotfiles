@@ -65,6 +65,16 @@ def get_screen_count() -> int:
     else:
         return screen_count
 
+# def parse_window_tabs(tabs: str) -> str:
+#     def _parse_tab(name: str) -> str:
+#         if len(name) >= 16:
+#             return name[:15]
+#         return name
+#     print(repr(tabs), file=open("/home/falamous/kek", "a"))
+#     print(tabs.split(WINDOW_TAB_TMP_SEP), file=open("/home/falamous/kek", "a"))
+#     print(''.join(map(_parse_tab, tabs.split(WINDOW_TAB_TMP_SEP))), file=open("/home/falamous/kek", "a"))
+#     return ''.join(map(_parse_tab, tabs.split(WINDOW_TAB_TMP_SEP)))
+
 def make_bar() -> bar.Bar:
     global systray
     status_colors = [gray, black]
