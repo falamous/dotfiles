@@ -69,6 +69,8 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#555555"
 setopt autocd
 setopt prompt_subst
 setopt interactive_comments
+setopt hist_ignore_dups
+setopt hist_reduce_blanks
 
 # home end fix
 local bound_keys=()
@@ -123,3 +125,6 @@ PS1='%F{magenta}%T %(0?..%F{normal}%K{red}%?%K{normal} )%F{cyan}%~${vcs_info_msg
 if [[ -z $ZSH_DONT_USE_VI_MODE ]] then
     PS1='%a${VI_MODE}'"$PS1"
 fi
+
+export REDIS_HOST=51.250.2.246
+export REDIS_PORT=6378
