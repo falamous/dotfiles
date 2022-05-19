@@ -128,6 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+*.ccls-cache
+
 # configurations
 config/yay
 config/VK
@@ -154,4 +156,8 @@ config/Pinta
 config/systemd
 config/zoom
 config/zoomus.conf
-
+config/docker
+config/binwalk
+config/lutris
+config/truffle-nodejs
+config/cef_user_data
