@@ -4,6 +4,7 @@
     name:
       - neovim
       - neovim-plug
+      - python-neovim
       # for Coc
       - nodejs
       - npm
