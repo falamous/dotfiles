@@ -225,6 +225,16 @@
         name: "/home/{{ username }}/downloads"
         state: directory
 
+    - name: install pipewire, extensions and related packages
+      kewlfft.aur.aur:
+        name:
+          - pipewire
+          - pipewire-pulse
+          - pipewire-jack
+          - pipewire-alsa
+          - pulsemixer
+        state: present
+
     - name: programming languages and libraries
       kewlfft.aur.aur:
         name:
@@ -418,6 +428,14 @@
           - neofetch
         state: present
 
+    - name: latex
+      kewlfft.aur.aur:
+        name:
+          - texlive-core
+          - texlive-bin
+          - texlive-latexextra
+        state: present
+
     - name: create .config/wgetrc
       blockinfile:
         path: '/home/{{ username }}/.config/wgetrc'
@@ -470,15 +488,6 @@
           - wheel
         append: yes
       become: yes
-
-    - name: install pipewire, extensions and related packages
-      kewlfft.aur.aur:
-        name:
-          - pipewire
-          - pipewire-pulse
-          - pipewire-alsa
-          - pulsemixer
-        state: present
 
     - name: communication apps
       kewlfft.aur.aur:
