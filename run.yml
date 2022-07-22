@@ -470,8 +470,6 @@
           - detect-it-easy
           - python-pwntools
           - python-uncompyle6
-          - python-pycryptodome
-          - sagemath
           - ropper
           - ropgadget
         state: present

@@ -6,7 +6,6 @@ alias grep='grep --color=auto'
 alias ls='lsd'
 alias l='lsd -al'
 alias cat='bat --paging=never'
-alias cp='rsync -aP'
 alias rg='rg --binary -n -H --no-heading'
 alias m='ncmpcpp -S visualizer'
 

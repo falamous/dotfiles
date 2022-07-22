@@ -55,7 +55,7 @@ keys = [
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod, "shift"], "c", lazy.window.kill(), desc="Kill focused window"),
-    Key([mod, "shift"], "x", lazy.spawn("xkill"), desc="Spawn xkill"),
+    Key([mod, "shift"], "k", lazy.spawn("xkill"), desc="Spawn xkill"),
     Key([mod], "r", lazy.spawn("flameshot gui"), desc="Take a screenshot"),
     Key([mod, "shift"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),

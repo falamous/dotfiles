@@ -32,8 +32,5 @@
             "disableWorkspaceFolders": true,
             "filetypes": ["rust"]
         }
-    },
-    "snippets.textmateSnippetsRoots": ["/home/falamous/.config/nvim/snippets"],
-    "coc.source.around.ignoreRegexps": ["^[0-9]*$"],
-    "coc.source.buffer.ignoreRegexps": ["^[0-9]*$"]
+    }
 }

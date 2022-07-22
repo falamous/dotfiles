@@ -34,9 +34,7 @@ set langmap+=ХЪЖЭБЮ;{}:\\"<>
 
 " set langmap+=хъ\\жэбю.;[]\\\;'\,./'
 " set langmap+=ХЪ/ЖЭБЮ\,;{}\|:\"<>?
-
-let mapleader = " "
-" nmap <Leader>s :%s///<Left><Left>
+nmap <Leader>s :%s///<Left><Left>
 
 " Don't cancel the visual block after indenting
 vmap < <gv
@@ -71,9 +69,9 @@ Plug 'lambdalisue/fern.vim'                          " file management
 Plug 'antoinemadec/FixCursorHold.nvim'               " fern fix
 Plug 'rootkiter/vim-hexedit'                         " hex editor
 Plug 'tpope/vim-surround'                            " surround motion
-" Plug 'easymotion/vim-easymotion'                     " easy motion
+Plug 'easymotion/vim-easymotion'                     " easy motion
 Plug 'ap/vim-css-color'                              " color highlighting
-Plug 'justinmk/vim-sneak'                          " sneak motion
+" Plug 'justinmk/vim-sneak'                          " sneak motion
 " Plug 'chrisbra/Colorizer'                          " color highlighting
 " Plug 'rlue/vim-barbaric'                           " automaticly switch to english upon leaving insert mode and back to russian when entering it
 Plug 'mg979/vim-visual-multi'                        " multi-cursor
@@ -82,6 +80,7 @@ Plug 'vim-airline/vim-airline'                       " airline bar
 Plug 'jeetsukumaran/vim-pythonsense'                 " various python motions
 Plug 'petRUShka/vim-sage'                            " sage syntax highlighting
 Plug 'udalov/kotlin-vim'                             " kotlin syntax highlighting
+Plug 'neoclide/coc.nvim', {'branch': 'release'}      " auto completetion and syntax checks
 " Plug 'vim-syntastic/syntastic'                     " syntax checks
 Plug 'jackguo380/vim-lsp-cxx-highlight'              " better syntax highlighting
 Plug 'habamax/vim-godot'
@@ -96,13 +95,11 @@ Plug 'whatyouhide/vim-gotham'
 Plug 'andreasvc/vim-256noir'
 Plug 'rakr/vim-two-firewatch'
 
-" Coc auto completetion and syntax checks
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Coc extensions
 Plug 'neoclide/coc-tsserver',    {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-texlab',   {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-pyright',  {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-sources',     {'do': 'yarn install --frozen-lockfile', 'rtp': 'packages/word'}
-Plug 'neoclide/coc-snippets',    {'do': 'yarn install --frozen-lockfile'}
 call plug#end()
 
 " Netrw configuration
@@ -137,7 +134,6 @@ cnoreabbrev ide call SetupIde()
 
 
 source ~/.config/nvim/coc.vim
-source ~/.config/nvim/snippets.vim
 " source ~/.config/nvim/syntastic.vim
 "
 if has("nvim-0.5.0")

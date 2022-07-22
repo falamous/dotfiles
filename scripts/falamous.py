@@ -6,7 +6,6 @@ import os
 import re
 import io
 import marshal
-import dis
 import string
 import struct
 import random
