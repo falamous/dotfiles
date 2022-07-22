@@ -7,6 +7,7 @@ from .colors import *
 from Xlib import display as xdisplay
 
 from .lang_widget import KeyboardLang
+from .gpu_widget import SupergfxGPU
 from .current_layout_char import CurrentLayoutChar
 
 POWERLINE_FONTSIZE = 23
@@ -77,7 +78,7 @@ def get_screen_count() -> int:
 
 def make_bar() -> bar.Bar:
     global systray
-    status_colors = [gray, black]
+    # status_colors = [gray, black]
     widgets_left = [
         [CurrentLayoutChar(fontsize=32)],
         [widget.GroupBox()],
@@ -92,18 +93,31 @@ def make_bar() -> bar.Bar:
             )
         ],
         [
+            SupergfxGPU(
+                gpu_backgrounds={
+                    "dedicated": green,
+                    "integrated": calm_red,
+                    },
+                gpu_names={
+                    "dedicated": "nvidia",
+                    "integrated": "amd",
+                    },
+                update_interval=1337,
+                )
+        ],
+        [
             widget.TextBox("🔊", fontsize=18, padding=5),
             widget.PulseVolume(
                 step=5,
             ),
         ],
         [widget.Net(format="{total}")],
-        # [
-        #     widget.Memory(
-        #         format="{MemUsed: .1f}/{MemTotal:.0f}{mm}",
-        #         measure_mem="G",
-        #     )
-        # ],
+        [
+            widget.Memory(
+                format="{MemUsed: .1f}/{MemTotal:.0f}{mm}",
+                measure_mem="G",
+            )
+        ],
         [
             widget.Battery(
                 charge_char="🔌",
@@ -170,7 +184,7 @@ def make_bar() -> bar.Bar:
             widgets.append(w)
 
         for w in ws:
-            if type(w) in [widget.Battery]:
+            if type(w) in [widget.Battery, SupergfxGPU]:
 
                 def apply_widget_background(color_widget, widgets, start, end):
                     widgets[start - 1].foreground = color_widget.background
@@ -180,8 +194,8 @@ def make_bar() -> bar.Bar:
                         pass
                     widgets[end].background = color_widget.background
 
-                w.format = ExecFormatter(
-                    w.format,
+                w.fmt = ExecFormatter(
+                    w.fmt,
                     partial(
                         apply_widget_background,
                         w,
@@ -190,6 +204,8 @@ def make_bar() -> bar.Bar:
                         len(widgets),
                     ),
                 )
+            # if type(w) in [SupergfxGPU]:
+            #     ai = (ai + 1) % 2
 
         ai = (ai + 1) % 2
 
