@@ -1,0 +1,66 @@
+{
+  "Integral": {
+    "prefix": ["integral", "\\integral"],
+    "body": ["\\integral {${1:- \\infty}} {${2:+ \\infty}} {${3:dx}}"],
+    "description": "An integral."
+  },
+  "Infinity": {
+    "prefix": ["infty", "\\infty"],
+    "body": ["\\infty"],
+    "description": "Infinity."
+  },
+  "Summation": {
+    "prefix": ["summ", "\\summ"],
+    "body": ["\\summ {${1:i = 1}} {${2:n}} {${3:p_i}}"],
+    "description": "A summation."
+  },
+  "Limit": {
+    "prefix": ["lim", "\\lim"],
+    "body": ["\\lim {${1:x} \\rightarrow ${2:+ \infty}} ${3:F(x)}"],
+    "description": "A summation."
+  },
+  "Equation block": {
+    "prefix": ["eqn", "equation"],
+    "body": ["\\begin{align*}", "$1", "\\end{align*}"],
+    "description": "An equation block."
+  },
+  "Interval def": {
+    "prefix": ["idef", "pdef"],
+    "body": [
+        "\\begin{align*}",
+        "${1:F(x)} = ",
+        "\\begin{cases}",
+        "$0",
+        "\\end{cases}",
+        "\\end{align*}"
+    ],
+    "description": "Function interval definition."
+  },
+  "Statement": {
+    "prefix": ["statement"],
+    "body": ["${1:A} = \\set{\\textup{$2}}"],
+    "description": "A statement."
+  },
+  "Table": {
+      "prefix": ["table", "tabular"],
+      "body": [
+          "\\begin{tabular} {${1:|c|c|c|c|}}",
+          "\\hline",
+          "${2:X & 0 & 1 & 2} \\\\\\",
+          "\\hline",
+          "${3:0.1 & 0.2 & 0.3 & 0.4} \\\\\\",
+          "\\hline",
+          "\\end{tabular}"
+      ],
+    "description": "A table."
+  },
+  "Begin": {
+      "prefix": ["begin"],
+      "body": [
+          "\\begin{$1}",
+          "$0",
+          "\\end{$1}"
+      ],
+    "description": "A begin/end statement."
+  }
+}

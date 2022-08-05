@@ -1,4 +1,5 @@
 {
+    "suggest.ignoreRegexps": ["^[0-9]*$"],
     "languageserver": {
         "ccls": {
             "command": "ccls",
