@@ -33,7 +33,7 @@
   blockinfile:
     path: '/etc/laptop-mode/laptop-mode.conf'
     block: |
-      HD="/dev/nvme?"
+      HD="{{laptop_hd}}"
       PARTITIONS="auto /"
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
   become: yes
