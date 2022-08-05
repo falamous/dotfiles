@@ -1,9 +1,15 @@
 ---
-- name: install asusctl ans supergfxctl
+- name: install asusctl, supergfxctl, laptop-mode and gpu drivers
   kewlfft.aur.aur:
     name:
       - asusctl
       - supergfxctl
+      - laptop-mode-tools
+      - nvidia
+      - nvidia-utils
+      - lib32-nvidia-utils
+      - mesa
+      - lib32-mesa
     state: present
 
 - name: enable and start asusd
@@ -17,6 +23,24 @@
 - name: enable and start supergfxd
   systemd:
     name: supergfxd
+    state: started
+    enabled: yes
+    masked: no
+  become: yes
+
+
+- name: configure laptop-mode
+  blockinfile:
+    path: '/etc/laptop-mode/laptop-mode.conf'
+    block: |
+      HD="/dev/nvme?"
+      PARTITIONS="auto /"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+  become: yes
+
+- name: enable and start laptop-mode
+  systemd:
+    name: laptop-mode
     state: started
     enabled: yes
     masked: no
@@ -37,7 +61,7 @@
   when: "asusd_conf.bat_charge_limit is not defined or
     asusd_conf.bat_charge_limit != bat_charge_limit"
 
-- name: switch to integrated graphics
-  shell: "supergfxctl -m {{ graphics_mode }}"
-  when: "supergfxd_conf.mode is not defined or
-    supergfxd_conf.mode != graphics_mode"
+# - name: switch to integrated graphics
+#   shell: "supergfxctl -m {{ graphics_mode }}"
+#   when: "supergfxd_conf.mode is not defined or
+#     supergfxd_conf.mode != graphics_mode"
