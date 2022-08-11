@@ -6,6 +6,8 @@ alias grep='grep --color=auto'
 alias ls='lsd'
 alias l='lsd -al'
 alias cat='bat --paging=never'
+# alias cp='rsync -aP'
+alias tokei="tokei "$@" | sed 's/=/─/g;s/|/│/g;s/-/─/g;s/^/│/;s/─$//;s/$/│/;s/│─/├─/g;s/─│/─┤/;1s/├/┌/;1s/┤/┐/;/ Total /,\$s/├/└/g;/ Total /,\$s/┤/┘/g'"
 alias rg='rg --binary -n -H --no-heading'
 alias m='ncmpcpp -S visualizer'
 
@@ -27,6 +29,12 @@ alias logout='pkill xinit'
 alias john='HOME=$XDG_DATA_HOME john'
 alias tor='sudo systemctl restart tor && sudo systemctl restart privoxy'
 
+function chpwd_tokei() {
+    if test -d .git || test -f docker-compose.yml; then
+        timeout 1 tokei 2>/dev/null | sed 's/=/─/g;s/|/│/g;s/-/─/g;s/^/│/;s/─$//;s/$/│/;s/│─/├─/g;s/─│/─┤/;1s/├/┌/;1s/┤/┐/;/ Total /,$s/├/└/g;/ Total /,$s/┤/┘/g'
+    fi
+}
+chpwd_functions=("${chpwd_functions[@]}" chpwd_tokei)
 
 function de() {
     # docker enter
