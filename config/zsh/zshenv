@@ -2,7 +2,7 @@ export PATH="$PATH:/opt/cuda/bin/:$HOME/scripts"
 export EDITOR="nvim"
 export SHELL="/bin/zsh"
 # export TERM="st"
-export TERM="xterm"
+# export TERM="xterm"
 export TERMINAL="tabbed -c alacritty --embed"
 export BROWSER="firefox"
 export READER="zathura"
@@ -76,7 +76,7 @@ export MOZ_DISABLE_GMP_SANDBOX=1
 export MOZ_DISABLE_CONTENT_SANDBOX=1
 
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
-export GNUPGHOME="$XDG_DATA_HOME/gpg"
+export GNUPGHOME="$HOME/share/gpg"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
 export DEBUGINFOD_URLS="https://debuginfod.archlinux.org/"
 export MAKEFLAGS="-j 2"

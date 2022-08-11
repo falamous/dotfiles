@@ -129,10 +129,10 @@
       file:
         name: "/home/{{ username }}/share/ssh"
         state: directory
-    - name: create local
-      file:
-        name: "/home/{{ username }}/share/local"
-        state: directory
+    # - name: create local
+    #   file:
+    #     name: "/home/{{ username }}/share/local"
+    #     state: directory
 
     - name: link src
       file:
@@ -150,30 +150,30 @@
         dest: "/home/{{ username }}/.ssh"
         state: link
 
-    - name: stat .local
-      stat:
-        name: "/home/{{ username }}/.local"
-      register: dot_local_stat
-    - name: sync .local
-      synchronize:
-        perms: yes
-        recursive: yes
-        src:  "/home/{{ username }}/.local"
-        dest: "/home/{{ username }}/share/local"
-      when: "dot_local_stat.stat.exists and (dot_local_stat.stat.lnk_source is not defined or
-        dot_local_stat.stat.lnk_source != '/home/' + username + '/share/local')"
-    - name: remove .locale
-      file:
-        name: "/home/{{ username }}/.local"
-        state: absent
-      when: "dot_local_stat.stat.lnk_source is not defined or
-        dot_local_stat.stat.lnk_source != '/home/' + username + '/share/local'"
+    # - name: stat .local
+    #   stat:
+    #     name: "/home/{{ username }}/.local"
+    #   register: dot_local_stat
+    # - name: sync .local
+    #   synchronize:
+    #     perms: yes
+    #     recursive: yes
+    #     src:  "/home/{{ username }}/.local"
+    #     dest: "/home/{{ username }}/share/local"
+    #   when: "dot_local_stat.stat.exists and (dot_local_stat.stat.lnk_source is not defined or
+    #     dot_local_stat.stat.lnk_source != '/home/' + username + '/share/local')"
+    # - name: remove .locale
+    #   file:
+    #     name: "/home/{{ username }}/.local"
+    #     state: absent
+    #   when: "dot_local_stat.stat.lnk_source is not defined or
+    #     dot_local_stat.stat.lnk_source != '/home/' + username + '/share/local'"
 
-    - name: link .local
-      file:
-        src:  "/home/{{ username }}/share/local"
-        dest: "/home/{{ username }}/.local"
-        state: link
+    # - name: link .local
+    #   file:
+    #     src:  "/home/{{ username }}/share/local"
+    #     dest: "/home/{{ username }}/.local"
+    #     state: link
 
 - name: install and configure packages
   hosts: 127.0.0.1
@@ -410,6 +410,9 @@
           - man-pages
           - ripgrep
           - lsd
+          - fd
+          - procs
+          - tokei
           - zip
           - unzip
           - evtest
@@ -472,7 +475,6 @@
           - python-uncompyle6
           - python-pycryptodome
           - sagemath
-          - ropper
           - ropgadget
         state: present
 
