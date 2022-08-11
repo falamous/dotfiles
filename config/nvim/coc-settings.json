@@ -1,5 +1,6 @@
 {
     "suggest.ignoreRegexps": ["^[0-9]*$"],
+    "snippets.textmateSnippetsRoots": ["/home/falamous/.config/nvim/snippets"],
     "languageserver": {
         "ccls": {
             "command": "ccls",
@@ -32,6 +33,14 @@
             "ignoredRootPaths": [],
             "disableWorkspaceFolders": true,
             "filetypes": ["rust"]
+        },
+        "jedi": {
+            "command": "jedi-language-server",
+            "rootPatterns": ["requirments.txt"],
+            "requireRootPattern" : false,
+            "ignoredRootPaths": [],
+            "disableWorkspaceFolders": true,
+            "filetypes": ["python", "sage"]
         }
     }
 }

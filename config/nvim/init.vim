@@ -64,8 +64,12 @@ set undofile
 call plug#begin(stdpath('data') . '/plugged')
 " Plug 'preservim/nerdtree'                            " file management, that I don't use
 Plug 'lambdalisue/nerdfont.vim'
-Plug 'lambdalisue/fern-renderer-nerdfont.vim'
-Plug 'lambdalisue/fern.vim'                          " file management
+
+" Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+" Plug 'lambdalisue/fern.vim'                          " file management
+
+Plug 'kyazdani42/nvim-web-devicons' " optional, for file icons
+Plug 'kyazdani42/nvim-tree.lua'
 
 Plug 'antoinemadec/FixCursorHold.nvim'               " fern fix
 Plug 'rootkiter/vim-hexedit'                         " hex editor
@@ -90,7 +94,6 @@ Plug 'habamax/vim-godot'
 Plug 'cocopon/iceberg.vim'
 Plug 'sts10/vim-pink-moon'
 Plug 'AlessandroYorba/Alduin'
-Plug 'haystackandroid/carbonized'
 Plug 'whatyouhide/vim-gotham'
 Plug 'andreasvc/vim-256noir'
 Plug 'rakr/vim-two-firewatch'
@@ -99,10 +102,17 @@ Plug 'rakr/vim-two-firewatch'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}      " auto completetion and syntax checks
 Plug 'neoclide/coc-tsserver',    {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-texlab',   {'do': 'yarn install --frozen-lockfile'}
-Plug 'fannheyward/coc-pyright',  {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-sources',     {'do': 'yarn install --frozen-lockfile', 'rtp': 'packages/word'}
-Plug 'neoclide/coc-snippets',     {'do': 'yarn install --frozen-lockfile'}
+" Plug 'neoclide/coc-sources',     {'do': 'yarn install --frozen-lockfile', 'rtp': 'packages/word'}
+Plug 'neoclide/coc-snippets',    {'do': 'yarn install --frozen-lockfile'}
 call plug#end()
+
+lua <<EOF
+require("nvim-tree").setup({
+    renderer={
+        highlight_opened_files='icon'
+    }
+  })
+EOF
 
 " Netrw configuration
 " let g:netrw_liststyle = 3

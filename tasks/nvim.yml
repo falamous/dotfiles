@@ -14,7 +14,7 @@
       - gopls
       - rust-analyzer
       - texlab
-      - pyright
+      - jedi
     state: present
 
 - name: update nvim plug
