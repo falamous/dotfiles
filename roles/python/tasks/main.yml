@@ -1,0 +1,42 @@
+---
+- name: install python and libraries
+  community.general.pacman:
+    name:
+      - z3
+      - python-z3-solver
+      - tesseract
+      - tesseract-data-rus
+      - python-pyocr
+      - python
+      - python-requests
+      - python-certifi
+      - python-pip
+      - python-gmpy2
+      - python-flask
+      - python-django
+      - python-numpy
+      - python-sympy
+      - python-psutil
+      - python-pyperclip
+      - ipython
+    state: present
+
+- name: clone python startup
+  ansible.builtin.git:
+    repo: "{{ config.python.repo }}"
+    dest: "/home/{{ config.general.username }}/.local/bin/falamous"
+  tags:
+    - skip_ansible_lint
+
+
+- name: extend path to include python scripts
+  ansible.builtin.blockinfile:
+    path: "{{ config.general.shellenv }}"
+    block: |
+      export PYTHONSTARTUP="$HOME/.local/bin/falamous/__init__.py"
+      export PYTHONPATH="$PYTHONPATH:$HOME/.local/bin/"
+      export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+
+    marker: "# {mark} ANSIBLE (python) MANAGED BLOCK"
+    create: true
+    mode: "0644"

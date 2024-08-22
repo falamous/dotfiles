@@ -1,0 +1,7 @@
+---
+- name: add the user to useful groups
+  ansible.builtin.user:
+    name: "{{ config.general.username }}"
+    groups: "{{ config.groups }}"
+    append: true
+  become: true

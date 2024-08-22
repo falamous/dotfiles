@@ -1,0 +1,23 @@
+---
+- name: setup timezone
+  community.general.timezone:
+    name: "{{ config.locale.timezone }}"
+    hwclock: UTC
+  become: true
+
+- name: generate locale
+  community.general.locale_gen:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ config.locale.locales }}"
+  become: true
+
+- name: set locale
+  ansible.builtin.blockinfile:
+    path: /etc/locale.conf
+    block: |
+      LANG={{ config.locale.locale }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    mode: "0644"
+    create: true
+  become: true

@@ -1,0 +1,32 @@
+---
+- name: install gdb and gef
+  community.general.pacman:
+    name:
+      - gdb
+      - gef
+    state: present
+  become: true
+
+- name: install gdb-multiarch
+  kewlfft.aur.aur:
+    name:
+      - gdb-multiarch
+    state: present
+
+- name: enable gef
+  ansible.builtin.blockinfile:
+    path: "/etc/gdb/gdbinit"
+    block: |
+      source /usr/share/gef/gef.py
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+  become: true
+
+
+- name: extend zsh env
+  ansible.builtin.blockinfile:
+    path: "{{ config.general.shellenv }}"
+    block: |
+      export GDBHISTFILE="$XDG_CACHE_HOME/gdb_history"
+    marker: "# {mark} ANSIBLE (gdb) MANAGED BLOCK"
+    create: true
+    mode: "0644"

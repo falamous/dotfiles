@@ -1,0 +1,20 @@
+---
+- name: install ly
+  community.general.pacman:
+    name: ly
+    state: present
+
+- name: enable ly
+  ansible.builtin.systemd:
+    name: ly
+    enabled: true
+    masked: false
+  become: true
+
+- name: configure ly
+  ansible.builtin.blockinfile:
+    path: /etc/ly/config.ini
+    block: |
+      animation = matrix
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+  become: true

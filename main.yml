@@ -1,0 +1,91 @@
+---
+- name: read config
+  hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: include config
+      ansible.builtin.include_vars:
+        file: config/config.yml
+        name: config
+      tags:
+        - always
+
+- name: install and configure packages
+  hosts: 127.0.0.1
+  connection: local
+  roles:
+    - role: base
+      tags:
+        - base
+    - role: links
+      when: config.get("links", false) != false
+      tags:
+        - links
+    - role: locale
+      when: config.get("locale", false) != false
+      tags:
+        - locale
+    - role: hwdb
+      when: config.get("hwdb", false) != false
+      tags:
+        - hwdb
+    - role: zsh
+      when: config.get("zsh", false) != false
+      tags:
+        - zsh
+    - role: graphenv
+      when: config.get("graphenv", false) != false
+      tags:
+        - graphenv
+    - role: fonts
+      when: config.get("fonts", false) != false
+      tags:
+        - fonts
+    - role: nvim
+      when: config.get("nvim", false) != false
+      tags:
+        - nvim
+    - role: suckless
+      when: config.get("suckless", false) != false
+      tags:
+        - suckless
+    - role: changemac
+      when: config.get("changemac", false) != false
+      tags:
+        - changemac
+    - role: laptop
+      when: config.get("laptop", false) != false
+      tags:
+        - laptop
+    - role: ly
+      when: config.get("ly", false) != false
+      tags:
+        - ly
+    - role: gdb
+      when: config.get("gdb", false) != false
+      tags:
+        - gdb
+    - role: python
+      when: config.get("python", false) != false
+      tags:
+        - python
+    - role: tor
+      when: config.get("tor", false) != false
+      tags:
+        - tor
+    - role: vbox
+      when: config.get("vbox", false) != false
+      tags:
+        - vbox
+    - role: xdg
+      when: config.get("xdg", false) != false
+      tags:
+        - xdg
+    - role: packages
+      when: config.get("packages", false) != false
+      tags:
+        - packages
+    - role: groups
+      when: config.get("groups", false) != false
+      tags:
+        - groups

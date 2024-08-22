@@ -1,0 +1,83 @@
+---
+- name: window manager, pipewire and graphical tools
+  community.general.pacman:
+    name:
+      - pipewire
+      - pipewire-jack
+      - pipewire-pulse
+      - pipewire-alsa
+      - pulsemixer
+      - xautolock
+      - xorg
+      - xclip
+      - qtile
+      - python-xkbgroup
+      - python-xlib
+      - picom
+      - unclutter
+      - dunst
+      - rofi
+      - rofi-greenclip
+      - flameshot
+      - sxiv
+      - zathura
+      - zathura-pdf-mupdf
+      - zathura-djvu
+      - zathura-ps
+      - mpv
+      - xwallpaper
+      - pinta
+      - alacritty
+      - xdg-user-dirs
+      - xdotool
+    state: present
+
+- name: copy graphical environment configs
+  ansible.builtin.copy:
+    src: config/
+    dest: "/home/{{ config.general.username }}/.config/"
+    mode: "0644"
+
+- name: copy xinitrc
+  ansible.builtin.copy:
+    src: xinitrc
+    dest: "/home/{{ config.general.username }}/.xinitrc"
+    mode: "0755"
+
+- name: copy xinitrc
+  ansible.builtin.copy:
+    src: Xresources
+    dest: "/home/{{ config.general.username }}/.Xresources"
+    mode: "0644"
+
+- name: copy Xresources
+  ansible.builtin.copy:
+    src: config/
+    dest: "/home/{{ config.general.username }}/.config/"
+    mode: "0644"
+
+- name: copy graphical environment scripts
+  ansible.builtin.copy:
+    src: bin/
+    dest: "/home/{{ config.general.username }}/.local/bin"
+    mode: "0644"
+
+- name: extend path to include graphical environment scripts
+  ansible.builtin.blockinfile:
+    path: "{{ config.general.shellenv }}"
+    block: |
+      export PATH="$PATH:/home/{{ config.general.username }}/.local/bin"
+      export TERMINAL="tabbed -c alacritty --embed"
+      export BROWSER="firefox"
+      export READER="zathura"
+      export PAGER="less"
+      export QT_AUTO_SCREEN_SCALE_FACTOR=1
+      export DEBUGINFOD_URLS="https://debuginfod.archlinux.org/"
+      export MAKEFLAGS="-j 16"
+
+      export _JAVA_AWT_WM_NONREPARENTING=1 # for ghidra
+      export AWT_TOOLKIT=MToolKit
+
+    marker: "# {mark} ANSIBLE (graphenv) MANAGED BLOCK"
+    create: true
+    mode: "0644"

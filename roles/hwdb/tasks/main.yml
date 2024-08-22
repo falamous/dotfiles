@@ -1,0 +1,26 @@
+---
+- name: edit hwdb (CAPS to escape)
+  ansible.builtin.blockinfile:
+    path: /etc/udev/hwdb.d/generic-keyboard.hwdb
+    block: |
+      evdev:input:*
+        KEYBOARD_KEY_70039=esc
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    mode: "0644"
+    create: true
+  become: true
+
+- name: edit hwdb (laptop keys)
+  ansible.builtin.blockinfile:
+    path: /etc/udev/hwdb.d/notebook-keyboard.hwdb
+    block: |
+      evdev:input:b0003v0B05p1866e0110*
+        KEYBOARD_KEY_c00ea=home
+        KEYBOARD_KEY_c00e9=end
+        KEYBOARD_KEY_7004c=insert
+        KEYBOARD_KEY_ff31007c=pageup
+        KEYBOARD_KEY_ff310038=pagedown
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    mode: "0644"
+    create: true
+  become: true

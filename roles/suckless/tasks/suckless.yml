@@ -1,0 +1,24 @@
+- name: clone suckless binary
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.target }}"
+    # repo: https://github.com/falamous/slock
+    # dest: "/home/{{ username }}/src/slock"
+  register: suckless_git
+  tags:
+    - skip_ansible_lint
+
+- name: stat binary
+  ansible.builtin.stat:
+    path: "{{ item.binary }}"
+    # path: /usr/local/bin/slock
+  register: suckless_bin
+
+- name: compile and install suckless binary
+  community.general.make:
+    chdir: "{{ item.target }}"
+    target: install
+  when: suckless_git.changed or not suckless_bin.stat.exists
+  become: true
+  tags:
+    - skip_ansible_lint

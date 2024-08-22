@@ -1,7 +1,0 @@
----
-username: falamous
-home_files_location: /mnt/home
-bat_charge_limit: 85
-graphics_mode: Integrated
-
-laptop_hd: "/dev/nvme?"

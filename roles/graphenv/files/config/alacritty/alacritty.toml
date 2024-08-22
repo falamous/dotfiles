@@ -1,0 +1,18 @@
+[colors.primary]
+background = "#202226"
+foreground = "#d0d0d0"
+
+[font.normal]
+family = "monospace"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "Insert"
+mods = "Shift"
+
+[selection]
+save_to_clipboard = true
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+[window]
+opacity = 0.95

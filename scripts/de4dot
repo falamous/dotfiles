@@ -1,3 +1,0 @@
-#!/bin/sh
-
-wine ~/tools/de4dot/de4dot.exe "$@" &

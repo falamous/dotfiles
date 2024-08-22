@@ -1,2 +1,0 @@
-#!/bin/sh
-cd ~/tools/dirsearch && python dirsearch.py -e '*' -u "$@"

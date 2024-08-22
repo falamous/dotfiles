@@ -1,0 +1,32 @@
+---
+- name: install nvim and external programms
+  community.general.pacman:
+    name:
+      - neovim
+    state: present
+
+- name: clone nvim config
+  ansible.builtin.git:
+    repo: "{{ config.nvim.repo }}"
+    dest: "/home/{{ config.general.username }}/.config/nvim"
+  tags:
+    - skip_ansible_lint
+
+- name: extend path to include mason binaries
+  ansible.builtin.blockinfile:
+    path: "{{ config.general.shellenv }}"
+    block: |
+      export EDITOR="nvim"
+      export PATH="$PATH:$XDG_DATA_HOME/nvim/mason/bin/"
+    marker: "# {mark} ANSIBLE (nvim) MANAGED BLOCK"
+    create: true
+    mode: "0644"
+
+
+- name: link /bin/vi to neovim
+  ansible.builtin.file:
+    src: /bin/nvim
+    dest: /bin/vi
+    state: link
+    force: true
+  become: true

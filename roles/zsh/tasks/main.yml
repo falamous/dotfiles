@@ -1,0 +1,41 @@
+---
+- name: install zsh
+  community.general.pacman:
+    name:
+      - zsh
+    state: present
+
+- name: clone zsh config
+  ansible.builtin.git:
+    repo: "{{ config.zsh.repo }}"
+    dest: "/home/{{ config.general.username }}/.config/zsh"
+  tags:
+    - skip_ansible_lint
+
+- name: extend zsh env
+  ansible.builtin.blockinfile:
+    path: "{{ config.general.shellenv }}"
+    block: |
+      export PATH="$PATH:/opt/cuda/bin/:$HOME/scripts"
+      export SHELL="/bin/zsh"
+      export XDG_CONFIG_HOME="$HOME/.config"
+      export XDG_DATA_HOME="$HOME/.local/share"
+      export XDG_CACHE_HOME="$HOME/.cache"
+
+      ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+    marker: "# {mark} ANSIBLE (zsh) MANAGED BLOCK"
+    create: true
+    mode: "0644"
+
+- name: make zsh the default shell
+  ansible.builtin.user:
+    name: "{{ config.general.username }}"
+    shell: /bin/zsh
+  become: true
+
+- name: create .cache/zsh
+  ansible.builtin.file:
+    name: "/home/{{ config.general.username }}/.cache/zsh"
+    state: directory
+    mode: "0755"

@@ -1,0 +1,4 @@
+---
+- name: link stuff
+  ansible.builtin.include_tasks: links.yml
+  loop: "{{ config.links }}"

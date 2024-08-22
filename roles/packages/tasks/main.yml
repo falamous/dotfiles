@@ -1,0 +1,10 @@
+---
+- name: install packages with pacman
+  community.general.pacman:
+    name: "{{ config.packages.pacman }}"
+    state: present
+
+- name: install packages from aur
+  kewlfft.aur.aur:
+    name: "{{ config.packages.aur }}"
+    state: present

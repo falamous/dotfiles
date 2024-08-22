@@ -1,0 +1,75 @@
+---
+- name: create ~/.config/git
+  ansible.builtin.file:
+    path: "/home/{{ config.general.username }}/.config/git"
+    state: "directory"
+    mode: "0755"
+
+- name: configure git
+  ansible.builtin.blockinfile:
+    path: "/home/{{ config.general.username }}/.config/git/config"
+    block: |
+      [user]
+      email = {{ config.general.email }}
+      name = {{ config.general.username }}
+      [core]
+      editor = nvim
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    create: true
+    mode: "0644"
+
+- name: disable account locking after 3 wrong passwords
+  ansible.builtin.blockinfile:
+    path: '/etc/security/faillock.conf'
+    block: "deny = 31337"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+  become: true
+
+- name: edit pacman.conf
+  ansible.builtin.blockinfile:
+    path: /etc/pacman.conf
+    block: |
+      [options]
+      Color
+      ParallelDownloads = 16
+      [multilib]
+      Include = /etc/pacman.d/mirrorlist
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+  register: edit_pacman_conf
+  become: true
+
+- name: pacman -Sy
+  community.general.pacman:
+    update_cache: true
+  when: edit_pacman_conf.changed
+  become: true
+  tags:
+    - skip_ansible_lint
+
+- name: install base-devel and git for yay
+  community.general.pacman:
+    name:
+      - base-devel
+      - git
+    state: present
+  become: true
+
+- name: install yay
+  kewlfft.aur.aur:
+    name: yay
+    state: present
+    use: makepkg
+
+- name: install cronie
+  community.general.pacman:
+    name:
+      - cronie
+    state: present
+
+- name: enable cronie
+  ansible.builtin.systemd:
+    name: cronie
+    state: started
+    enabled: true
+    masked: false
+  become: true

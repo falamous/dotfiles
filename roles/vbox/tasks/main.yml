@@ -1,0 +1,74 @@
+---
+- name: install virtualbox
+  community.general.pacman:
+    name:
+      - virtualbox-host-modules-arch
+      - virtualbox
+    state: present
+
+- name: install virtualbox-ext-oracle
+  kewlfft.aur.aur:
+    name:
+      - virtualbox-ext-oracle
+    state: present
+
+- name: load vboxdrv
+  community.general.modprobe:
+    name: vboxdrv
+    state: present
+  become: true
+
+- name: create share/vbox
+  ansible.builtin.file:
+    name: "/home/{{ config.general.username }}/share/vbox"
+    state: directory
+    mode: "0755"
+
+- name: stat .config/VirtualBox
+  ansible.builtin.stat:
+    name: "/home/{{ config.general.username }}/.config/VirtualBox"
+  register: config_vbox_stat
+
+- name: sync .config/VirtualBox
+  ansible.posix.synchronize:
+    perms: true
+    recursive: true
+    src: "/home/{{ config.general.username }}/.config/VirtualBox"
+    dest: "/home/{{ config.general.username }}/share/vbox"
+  when: "config_vbox_stat.stat.exists and
+    (config_vbox_stat.stat.lnk_source is not defined or
+    config_vbox_stat.stat.lnk_source != '/home/' +
+    config.general.username + '/share/vbox')"
+
+- name: remove .config/VirtualBox
+  ansible.builtin.file:
+    name: "/home/{{ config.general.username }}/.config/VirtualBox"
+    state: absent
+  when: "config_vbox_stat.stat.lnk_source is not defined or
+    config_vbox_stat.stat.lnk_source != '/home/' +
+    config.general.username + '/share/vbox'"
+
+- name: link .config/VirtualBox
+  ansible.builtin.file:
+    src: "/home/{{ config.general.username }}/share/vbox"
+    dest: "/home/{{ config.general.username }}/.config/VirtualBox"
+    force: true
+    state: link
+
+- name: check if VirtualBox.xml exists
+  ansible.builtin.stat:
+    name: "/home/{{ config.general.username }}/share/vbox/VirtualBox.xml"
+  register: virtualbox_xml
+
+- name: configure VirtualBox
+  ansible.builtin.lineinfile:
+    path: "/home/{{ config.general.username }}/.config/VirtualBox/VirtualBox.xml"
+    regexp: "^(.*defaultMachineFolder=['\"])/home/{{ config.general.username }}/VirtualBox VMs(['\"].*)$"
+    line: >
+      \1/home/{{ config.general.username }}/
+      share/vbox/vms\2
+    create: false
+    backrefs: true
+  when: virtualbox_xml.stat.exists
+  tags:
+    - skip_ansible_lint

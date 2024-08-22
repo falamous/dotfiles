@@ -1,0 +1,26 @@
+---
+- name: install fonts
+  community.general.pacman:
+    name:
+      - adobe-source-code-pro-fonts
+      - ttf-nerd-fonts-symbols
+      - ttf-symbola
+      - xcursor-hacked-white
+    state: present
+
+- name: install fonts from aur
+  kewlfft.aur.aur:
+    name:
+      - ttf-courier-prime-code
+    state: present
+
+- name: ensure ~/.config/fontconfig exists
+  ansible.builtin.file:
+    path: "/home/{{ config.general.username }}/.config/fontconfig"
+    state: directory
+    mode: "0755"
+
+- name: copy fontconfig
+  ansible.builtin.copy:
+    src: fonts.conf
+    dest: "/home/{{ config.general.username }}/.config/fontconfig/"

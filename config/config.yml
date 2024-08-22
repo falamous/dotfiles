@@ -1,0 +1,152 @@
+---
+general:
+  username: falamous
+  email: falamous@mail.ru
+  shellenv: /home/falamous/.zshenv
+
+base:
+links:
+  - src: "/home/falamous/share/src"
+    dest: "/home/falamous/src"
+  - src: "/home/falamous/share/scripts"
+    dest: "/home/falamous/scripts"
+
+  - src: "/home/falamous/share/apps/discord"
+    dest: "/home/falamous/.config/discord"
+  - src: "/home/falamous/share/apps/telegram"
+    dest: "/home/falamous/.local/share/TelegramDesktop"
+  - src: "/home/falamous/share/apps/ssh"
+    dest: "/home/falamous/.ssh"
+  - src: "/home/falamous/share/apps/firefox"
+    dest: "/home/falamous/.mozilla"
+
+changemac:
+gdb:
+hwdb:
+graphenv:
+fonts:
+python:
+  repo: https://github.com/falamous/falamous-py
+laptop:
+locale:
+  timezone: Europe/Moscow
+  locales:
+    - en_GB.UTF-8
+    - ru_RU.UTF-8
+  locale: en_GB.UTF-8
+
+ly:
+nvim:
+  repo: https://github.com/falamous/nvim-config
+suckless:
+  - repo: https://github.com/falamous/slock
+    target: /home/falamous/src/slock
+    binary: /usr/local/bin/slock
+  - repo: https://github.com/falamous/tabbed
+    target: /home/falamous/src/tabbed
+    binary: /usr/local/bin/tabbed
+tor:
+vbox:
+xdg:
+zsh:
+  repo: https://github.com/falamous/zshrc
+
+packages:
+  pacman:
+    # programming languages
+    - nodejs
+    - npm
+    - yarn
+    - php
+    - go
+    - cuda
+    - gcc
+    - gtk2
+    - sdl
+    - clang
+    - cmake
+    - ruby
+
+    - pypy3
+    # network tools
+    - iw
+    - wpa_supplicant
+    - bind
+    - iputils
+    - gnu-netcat
+    - nmap
+    - socat
+    - net-tools
+    - ntp
+    - wireshark-qt
+    - gobuster
+
+    # wine
+    - wine
+    - unixodbc
+    - wine-mono
+    - wine-gecko
+
+    # cli tooles
+    - man
+    - man-pages
+    - ripgrep
+    - lsd
+    - fd
+    - procs
+    - tokei
+    - zip
+    - unzip
+    - evtest
+    - sqlite
+    - sqlitebrowser
+    - p7zip
+    - wget
+    - aria2
+    - pv
+    - bat
+    - imagemagick
+    - mlocate
+    - bootiso
+    - openssh
+    - sshpass
+    - neofetch
+    # latex
+    - texlive-core
+    - texlive-bin
+    - texlive-latexextra
+
+    # reverse and pwn stuff
+    - radare2
+    - r2ghidra
+    - ghidra
+    - ropper
+    - strace
+    - ltrace
+    - python-pwntools
+    - python-uncompyle6
+    - python-pycryptodome
+    - sagemath
+    - ropgadget
+
+    # communication
+    - telegram-desktop
+    - discord
+
+    # browsers
+    - torbrowser-launcher
+    - chromium
+    - firefox
+    - google-chrome
+  aur:
+    - detect-it-easy
+
+groups:
+  - wireshark
+  - uucp
+  - proc
+  - video
+  - audio
+  - docker
+  - input
+  - wheel

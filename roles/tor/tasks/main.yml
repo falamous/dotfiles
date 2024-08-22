@@ -1,0 +1,35 @@
+---
+- name: install tor and privoxy
+  community.general.pacman:
+    name:
+      - tor
+      - torsocks
+      - privoxy
+    state: present
+
+- name: install obfs4
+  kewlfft.aur.aur:
+    name:
+      - obfs4proxy
+    state: present
+
+- name: configure privoxy
+  ansible.builtin.blockinfile:
+    path: '/etc/privoxy/config'
+    block: "forward-socks5 / localhost:9050 ."
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    create: true
+    mode: "0644"
+  become: true
+
+- name: configure tor
+  ansible.builtin.blockinfile:
+    path: '/etc/tor/torrc'
+    block: |
+      ClientTransportPlugin obfs4 exec /usr/bin/obfs4proxy
+      ExtORPort auto
+      UseBridges 1
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    mode: "0644"
+    create: true
+  become: true

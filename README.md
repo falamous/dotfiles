@@ -7,7 +7,7 @@ mkdir -p ~/share/src && cd ~/share/src
 git clone https://github.com/falamous/dotfiles
 cd dotfiles
 ansible-galaxy install -r requirements.yml
-ansible-playbook -K run.yml
+ansible-playbook -K main.yml
 ```
 ## functionality:
 - links most ~ files to relevant files in ~/share to centralize user data to one data for backups and file transfer

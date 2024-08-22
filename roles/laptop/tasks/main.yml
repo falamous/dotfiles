@@ -1,0 +1,48 @@
+---
+- name: install asusctl and supergfxctl
+  kewlfft.aur.aur:
+    name:
+      - asusctl
+      - supergfxctl
+    state: present
+
+- name: install gpu drivers
+  kewlfft.aur.aur:
+    name:
+      - nvidia
+      - nvidia-utils
+      - lib32-nvidia-utils
+      - mesa
+      - lib32-mesa
+    state: present
+
+- name: enable and start asusd
+  ansible.builtin.systemd:
+    name: asusd
+    state: started
+    enabled: true
+    masked: false
+  become: true
+
+- name: enable and start supergfxd
+  ansible.builtin.systemd:
+    name: supergfxd
+    state: started
+    enabled: true
+    masked: false
+  become: true
+
+- name: copy disable-turbo-boost.service
+  ansible.builtin.copy:
+    src: disable-turbo-boost.service
+    dest: /etc/systemd/system/
+    mode: "0644"
+  become: true
+
+- name: enable disable-turbo-boost
+  ansible.builtin.systemd:
+    name: disable-turbo-boost
+    state: started
+    enabled: true
+    masked: false
+  become: true

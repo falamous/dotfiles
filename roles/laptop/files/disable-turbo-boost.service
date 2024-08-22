@@ -1,0 +1,9 @@
+[Unit]
+Description=disable turbo boost
+
+[Service]
+User=root
+ExecStart=sh -c 'echo 0 | tee /sys/devices/system/cpu/cpufreq/boost'
+
+[Install]
+WantedBy=multi-user.target

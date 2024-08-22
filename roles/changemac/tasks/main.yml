@@ -1,0 +1,44 @@
+---
+- name: copy macgen (mac address randomization script)
+  ansible.builtin.copy:
+    src: macgen
+    dest: /bin/macgen
+    mode: "0755"
+  become: true
+  tags:
+    - skip_ansible_lint
+
+- name: copy changemac (mac address change script)
+  ansible.builtin.copy:
+    src: changemac
+    dest: /bin/changemac
+    mode: "0755"
+  become: true
+  tags:
+    - skip_ansible_lint
+
+- name: check if macs_to_change exists
+  ansible.builtin.stat:
+    name: "/home/{{ config.general.username }}/share/macs_to_change"
+  register: macs_to_change
+
+- name: copy macs_to_change
+  ansible.builtin.copy:
+    src: "/home/{{ config.general.username }}/share/macs_to_change"
+    dest: "/etc/macs_to_change"
+    mode: "0600"
+  when: macs_to_change.stat.exists
+  become: true
+
+- name: enable mac-randomization script
+  ansible.builtin.cron:
+    name: macgen
+    day: 13
+    job: macgen
+  become: true
+
+- name: ensure macs were changed
+  ansible.builtin.command:
+    cmd: "macgen"
+    creates: "/etc/udev/rules.d/75-mac-spoof.rules"
+  become: true

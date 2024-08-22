@@ -1,0 +1,4 @@
+---
+- name: install suckless binaries
+  ansible.builtin.include_tasks: suckless.yml
+  loop: "{{ config.suckless }}"
