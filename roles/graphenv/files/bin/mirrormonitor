@@ -9,8 +9,15 @@ function get_connected_outputs() {
         cut -d' ' -f1
 }
 
+external_outputs=$(get_connected_outputs |
+    grep -v $internal_regex
+)
+internal_outputs=$(get_connected_outputs |
+    grep $internal_regex
+)
+
 prev_o=
-for o in $(get_connected_outputs)
+for o in $internal_outputs
 do
     if [[ -n "$prev_o" ]]; then
         xrandr --output "$o" --auto --left-of "$prev_o"
@@ -20,12 +27,15 @@ do
     prev_o="$o"
 done
 
-# external_outputs=$(get_connected_outputs |
-#     grep -v $internal_regex
-# )
-# internal_outputs=$(get_connected_outputs |
-#     grep $internal_regex
-# )
+for o in $external_outputs
+do
+    if [[ -n "$prev_o" ]]; then
+        xrandr --output "$o" --auto --left-of "$prev_o"
+    else
+        xrandr --output "$o" --auto
+    fi
+    prev_o="$o"
+done
 
 disconnected_outputs=$(xrandr |
     grep disconnected |

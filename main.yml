@@ -21,6 +21,10 @@
       when: config.get("links", false) != false
       tags:
         - links
+    - role: network
+      when: config.get("network", false) != false
+      tags:
+        -  network
     - role: locale
       when: config.get("locale", false) != false
       tags:

@@ -18,6 +18,9 @@
     path: "/etc/gdb/gdbinit"
     block: |
       source /usr/share/gef/gef.py
+      gef config context.clear_screen false
+      gef config context.legend "legend regs stack code args source memory threads extra"
+      set auto-load safe-path /
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
   become: true
 

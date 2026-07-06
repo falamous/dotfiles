@@ -10,6 +10,8 @@ links:
     dest: "/home/falamous/src"
   - src: "/home/falamous/share/scripts"
     dest: "/home/falamous/scripts"
+  - src: "/home/falamous/share/tools"
+    dest: "/home/falamous/tools"
 
   - src: "/home/falamous/share/apps/discord"
     dest: "/home/falamous/.config/discord"
@@ -19,7 +21,16 @@ links:
     dest: "/home/falamous/.ssh"
   - src: "/home/falamous/share/apps/firefox"
     dest: "/home/falamous/.mozilla"
+  - src: "/home/falamous/share/apps/vbox"
+    dest: "/home/falamous/.config/VirtualBox"
+  - src: "/home/falamous/share/apps/cursor/config/"
+    dest: "/home/falamous/.config/Cursor"
+  - src: "/home/falamous/share/apps/cursor/dot"
+    dest: "/home/falamous/.cursor"
+  - src: "/home/falamous/share/apps/vscode_oss/"
+    dest: "/home/falamous/.vscode-oss"
 
+network:
 changemac:
 gdb:
 hwdb:
@@ -32,6 +43,7 @@ locale:
   timezone: Europe/Moscow
   locales:
     - en_GB.UTF-8
+    - en_US.UTF-8
     - ru_RU.UTF-8
   locale: en_GB.UTF-8
 
@@ -61,11 +73,14 @@ packages:
     - go
     - cuda
     - gcc
-    - gtk2
+    # - gtk2
     - sdl
     - clang
     - cmake
     - ruby
+
+    - docker
+    - docker-compose
 
     - pypy3
     # network tools
@@ -73,13 +88,12 @@ packages:
     - wpa_supplicant
     - bind
     - iputils
-    - gnu-netcat
+    - netcat
     - nmap
     - socat
     - net-tools
     - ntp
     - wireshark-qt
-    - gobuster
 
     # wine
     - wine
@@ -106,11 +120,9 @@ packages:
     - pv
     - bat
     - imagemagick
-    - mlocate
-    - bootiso
     - openssh
     - sshpass
-    - neofetch
+
     # latex
     - texlive-core
     - texlive-bin
@@ -124,22 +136,26 @@ packages:
     - strace
     - ltrace
     - python-pwntools
-    - python-uncompyle6
     - python-pycryptodome
     - sagemath
     - ropgadget
 
     # communication
-    - telegram-desktop
     - discord
 
     # browsers
     - torbrowser-launcher
     - chromium
     - firefox
-    - google-chrome
   aur:
+    zen-browser-bin
+    - ayugram-desktop-bin
+    - neofetch
+    - amneziavpn-bin
+    - cursor-bin
     - detect-it-easy
+    - gobuster
+    - google-chrome
 
 groups:
   - wireshark

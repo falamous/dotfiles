@@ -4,6 +4,13 @@
     name:
       - zsh
     state: present
+  become: true
+
+- name: install antigen
+  kewlfft.aur.aur:
+    name:
+      - antigen
+    state: present
 
 - name: clone zsh config
   ansible.builtin.git:
@@ -16,11 +23,12 @@
   ansible.builtin.blockinfile:
     path: "{{ config.general.shellenv }}"
     block: |
-      export PATH="$PATH:/opt/cuda/bin/:$HOME/scripts"
       export SHELL="/bin/zsh"
       export XDG_CONFIG_HOME="$HOME/.config"
       export XDG_DATA_HOME="$HOME/.local/share"
       export XDG_CACHE_HOME="$HOME/.cache"
+      export PATH="/usr/bin:/sbin:/usr/sbin:/bin:$PATH"
+      export PATH="$HOME/scripts:$PATH:/opt/cuda/bin:$XDG_DATA_HOME/cargo/bin:$XDG_DATA_HOME/go/bin"
 
       ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 

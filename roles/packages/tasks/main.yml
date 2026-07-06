@@ -3,6 +3,7 @@
   community.general.pacman:
     name: "{{ config.packages.pacman }}"
     state: present
+  become: true
 
 - name: install packages from aur
   kewlfft.aur.aur:

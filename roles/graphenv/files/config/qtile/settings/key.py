@@ -1,4 +1,5 @@
 from libqtile.config import Click, Drag, Key, ScratchPad
+from libqtile.widget import backlight
 from libqtile.lazy import lazy
 from .group import groups
 from .system import terminal
@@ -37,10 +38,8 @@ keys = [
     Key(
         [mod, "shift"], "space", lazy.layout.normalize(), desc="Reset all window sizes"
     ),
-    Key([mod], "f", lazy.window.toggle_floating(), desc="Toggle floating"),
-    Key(
-        [mod, "shift"], "f", lazy.window.toggle_fullscreen(), desc="Toggle full screen"
-    ),
+    Key([mod, "shift"], "f", lazy.window.toggle_floating(), desc="Toggle floating"),
+    Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Toggle full screen"),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -77,20 +76,52 @@ keys = [
     ),
     # Volume
     Key(
-        [mod],
+        [mod, "shift"],
         "equal",
         lazy.widget["pulsevolume"].increase_vol(),
         desc="Increase volume",
     ),
     Key(
-        [mod],
+        [mod, "shift"],
         "minus",
         lazy.widget["pulsevolume"].decrease_vol(),
         desc="Decrease volume",
     ),
-    Key([mod], "m", lazy.spawn("mpc toggle"), desc="Play/pause music"),
-    Key([mod], "n", lazy.spawn("mpc next"), desc="Skip to next track"),
-    Key([mod, "shift"], "n", lazy.spawn("mpc prev"), desc="Skip to previous track"),
+    # keyboard backlight
+    Key(
+        [mod],
+        "a",
+        lazy.spawn("sh -c '(asusctl leds get | grep -i off) && asusctl leds set low || asusctl leds set off'"),
+        desc="Decrease volume",
+    ),
+    # brightness
+    Key(
+        [mod],
+        "equal",
+        lazy.widget["backlight"].change_backlight(backlight.ChangeDirection.UP),
+        desc="Increase brightness",
+    ),
+    Key(
+        [mod],
+        "minus",
+        lazy.widget["backlight"].change_backlight(backlight.ChangeDirection.DOWN),
+        desc="Decrease brightness",
+    ),
+    Key(
+        [],
+        "XF86MonBrightnessUp",
+        lazy.widget["backlight"].change_backlight(backlight.ChangeDirection.UP),
+        desc="Increase brightness",
+    ),
+    Key(
+        [],
+        "XF86MonBrightnessDown",
+        lazy.widget["backlight"].change_backlight(backlight.ChangeDirection.DOWN),
+        desc="Decrease brightness",
+    ),
+    # Key([mod], "m", lazy.spawn("mpc toggle"), desc="Play/pause music"),
+    # Key([mod], "n", lazy.spawn("mpc next"), desc="Skip to next track"),
+    # Key([mod, "shift"], "n", lazy.spawn("mpc prev"), desc="Skip to previous track"),
 ]
 
 for i in groups:

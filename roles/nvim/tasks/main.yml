@@ -3,7 +3,15 @@
   community.general.pacman:
     name:
       - neovim
+      - nodejs
     state: present
+
+
+# - name: install external programms from aur
+#   kewlfft.aur.aur:
+#     name:
+#       - lsp-ai
+#     state: present
 
 - name: clone nvim config
   ansible.builtin.git:
@@ -18,6 +26,7 @@
     block: |
       export EDITOR="nvim"
       export PATH="$PATH:$XDG_DATA_HOME/nvim/mason/bin/"
+      export RUSTONIG_SYSTEM_LIBONIG="1"
     marker: "# {mark} ANSIBLE (nvim) MANAGED BLOCK"
     create: true
     mode: "0644"

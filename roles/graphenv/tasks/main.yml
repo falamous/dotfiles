@@ -7,17 +7,15 @@
       - pipewire-pulse
       - pipewire-alsa
       - pulsemixer
-      - xautolock
       - xorg
       - xclip
       - qtile
-      - python-xkbgroup
+      - lxqt-policykit
       - python-xlib
       - picom
       - unclutter
       - dunst
       - rofi
-      - rofi-greenclip
       - flameshot
       - sxiv
       - zathura
@@ -26,11 +24,26 @@
       - zathura-ps
       - mpv
       - xwallpaper
-      - pinta
       - alacritty
       - xdg-user-dirs
       - xdotool
+      - python-dbus-fast
+      - qt6ct
     state: present
+  become: true
+
+- name: install graphical environment packages from aur
+  kewlfft.aur.aur:
+    name:
+      - suru-plus-aspromauros-git 
+      - xautolock
+      # - pinta
+      - zen-browser-bin
+      - python-xkbgroup
+      - rofi-greenclip
+      - python-pulsectl-asyncio 
+    state: present
+  become: true
 
 - name: copy graphical environment configs
   ansible.builtin.copy:
@@ -68,11 +81,11 @@
     block: |
       export PATH="$PATH:/home/{{ config.general.username }}/.local/bin"
       export TERMINAL="tabbed -c alacritty --embed"
-      export BROWSER="firefox"
       export READER="zathura"
       export PAGER="less"
       export QT_AUTO_SCREEN_SCALE_FACTOR=1
       export DEBUGINFOD_URLS="https://debuginfod.archlinux.org/"
+      export QT_QPA_PLATFORMTHEME=qt6ct
       export MAKEFLAGS="-j 16"
 
       export _JAVA_AWT_WM_NONREPARENTING=1 # for ghidra

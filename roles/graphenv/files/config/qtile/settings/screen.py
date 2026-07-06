@@ -7,7 +7,7 @@ from .colors import *
 from Xlib import display as xdisplay
 
 from .lang_widget import KeyboardLang
-from .gpu_widget import SupergfxGPU
+from .gpu_widget import EnvyControlGPU
 from .current_layout_char import CurrentLayoutChar
 
 POWERLINE_FONTSIZE = 23
@@ -66,6 +66,7 @@ def get_screen_count() -> int:
     else:
         return screen_count
 
+
 # def parse_window_tabs(tabs: str) -> str:
 #     def _parse_tab(name: str) -> str:
 #         if len(name) >= 16:
@@ -75,6 +76,7 @@ def get_screen_count() -> int:
 #     print(tabs.split(WINDOW_TAB_TMP_SEP), file=open("/home/falamous/kek", "a"))
 #     print(''.join(map(_parse_tab, tabs.split(WINDOW_TAB_TMP_SEP))), file=open("/home/falamous/kek", "a"))
 #     return ''.join(map(_parse_tab, tabs.split(WINDOW_TAB_TMP_SEP)))
+
 
 def make_bar() -> bar.Bar:
     global systray
@@ -86,24 +88,30 @@ def make_bar() -> bar.Bar:
     ]
     widgets_right = [
         [
-            widget.Mpd2(
-                font="Source Code Pro",
-                status_format="{play_status} {artist} - {title}",
-                update_interval=0.2,
-            )
+            widget.TextBox("☼", fontsize=18, padding=5),
+            widget.Backlight(
+                font="Source code pro",
+                backlight_name="amdgpu_bl1",
+                change_command='zsh -c \'printf "%.f" "$(cat /sys/class/backlight/amdgpu_bl1/max_brightness) * {0} / 100" | tee /sys/class/backlight/amdgpu_bl1/brightness >>~/kek; echo {0} >>~/kek\'',
+            ),
+            # widget.Mpd2(
+            #     font="Source Code Pro",
+            #     status_format="{play_status} {artist} - {title}",
+            #     update_interval=0.2,
+            # )
         ],
         [
-            SupergfxGPU(
+            EnvyControlGPU(
                 gpu_backgrounds={
-                    "dedicated": green,
+                    "hybrid": blue,
+                    "nvidia": green,
                     "integrated": calm_red,
-                    },
+                },
                 gpu_names={
-                    "dedicated": "nvidia",
                     "integrated": "amd",
-                    },
+                },
                 update_interval=1337,
-                )
+            )
         ],
         [
             widget.TextBox("🔊", fontsize=18, padding=5),
@@ -111,7 +119,12 @@ def make_bar() -> bar.Bar:
                 step=5,
             ),
         ],
-        [widget.Net(format="{total}", use_bits=True)],
+        [
+            widget.Net(
+                format="{down:7.2f}{down_suffix:2}↓↑{up:7.2f}{up_suffix:2}",
+                use_bits=True,
+            )
+        ],
         [
             widget.Memory(
                 format="{MemUsed: .1f}/{MemTotal:.0f}{mm}",
@@ -184,7 +197,7 @@ def make_bar() -> bar.Bar:
             widgets.append(w)
 
         for w in ws:
-            if type(w) in [widget.Battery, SupergfxGPU]:
+            if type(w) in [widget.Battery, EnvyControlGPU]:
 
                 def apply_widget_background(color_widget, widgets, start, end):
                     widgets[start - 1].foreground = color_widget.background

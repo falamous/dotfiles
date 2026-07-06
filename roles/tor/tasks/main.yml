@@ -6,6 +6,7 @@
       - torsocks
       - privoxy
     state: present
+  become: true
 
 - name: install obfs4
   kewlfft.aur.aur:

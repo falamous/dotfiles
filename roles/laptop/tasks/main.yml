@@ -1,20 +1,29 @@
 ---
-- name: install asusctl and supergfxctl
-  kewlfft.aur.aur:
-    name:
-      - asusctl
-      - supergfxctl
-    state: present
+# - name: install asusctl and envycontrol
+#   kewlfft.aur.aur:
+#     name:
+#       - asusctl
+#       - supergfxctl
+#     state: present
 
-- name: install gpu drivers
-  kewlfft.aur.aur:
+# - name: install gpu drivers
+#   kewlfft.aur.aur:
+#     name:
+#       - nvidia-open
+#       - nvidia-utils
+#       - lib32-nvidia-utils
+#       - mesa
+#       - lib32-mesa
+#       # - xrt-npu-git 
+#       # - amdxdna-driver-bin
+#     state: present
+
+- name: install tlp
+  community.general.pacman:
     name:
-      - nvidia
-      - nvidia-utils
-      - lib32-nvidia-utils
-      - mesa
-      - lib32-mesa
+      - tlp
     state: present
+  become: true
 
 - name: enable and start asusd
   ansible.builtin.systemd:
@@ -24,12 +33,105 @@
     masked: false
   become: true
 
-- name: enable and start supergfxd
+- name: copy asusd keyboard config
+  ansible.builtin.copy:
+    src: aura_19b6.ron
+    dest: /etc/asusd/aura_19b6.ron
+    mode: "0644"
+  become: true
+
+- name: disable nm watchdog
+  ansible.builtin.blockinfile:
+    path: "/etc/tlp.conf"
+    block: |
+      RADEON_DPM_PERF_LEVEL_ON_AC=auto
+      RADEON_DPM_PERF_LEVEL_ON_BAT=low
+      CPU_BOOST_ON_AC=1
+      CPU_BOOST_ON_BAT=0
+      PCIE_ASPM_ON_AC=default
+      PCIE_ASPM_ON_BAT=powersupersave
+      PLATFORM_PROFILE_ON_BAT=quiet
+      CPU_ENERGY_PERF_POLICY_ON_BAT=power
+    marker: "# {mark} ANSIBLE (laptop) MANAGED BLOCK"
+    create: true
+    mode: "0644"
+  become: true
+
+- name: enable and start tlp
   ansible.builtin.systemd:
-    name: supergfxd
+    name: tlp
     state: started
     enabled: true
     masked: false
+  become: true
+
+# - name: enable and start supergfxd
+#   ansible.builtin.systemd:
+#     name: supergfxd
+#     state: started
+#     enabled: true
+#     masked: false
+#   become: true
+
+- name: disable nm watchdog
+  ansible.builtin.blockinfile:
+    path: "/etc/sysctl.d/disable_watchdog.conf"
+    block: |
+      kernel.nmi_watchdog = 0
+    marker: "# {mark} ANSIBLE (laptop) MANAGED BLOCK"
+    create: true
+    mode: "0644"
+  become: true
+
+- name: increase writebacktime
+  ansible.builtin.blockinfile:
+    path: "/etc/sysctl.d/dirty.conf"
+    block: |
+      vm.dirty_writeback_centisecs = 6000
+    marker: "# {mark} ANSIBLE (laptop) MANAGED BLOCK"
+    create: true
+    mode: "0644"
+  become: true
+
+- name: enable powersaving for wifi
+  ansible.builtin.blockinfile:
+    path: "/etc/modprobe.d/iwlwifi.conf"
+    block: |
+      options iwlwifi power_save=1
+    marker: "# {mark} ANSIBLE (laptop) MANAGED BLOCK"
+    create: true
+    mode: "0644"
+  become: true
+
+- name: disable wake on lan
+  ansible.builtin.blockinfile:
+    path: "/etc/udev/rules.d/81-wifi-powersave.rules"
+    block: |
+      ACTION=="add", SUBSYSTEM=="net", KERNEL=="wl*", RUN+="/usr/bin/iw dev $name set power_save on"
+    marker: "# {mark} ANSIBLE (laptop) MANAGED BLOCK"
+    create: true
+    mode: "0644"
+  become: true
+
+- name: enable powersaving for networkmanager
+  ansible.builtin.blockinfile:
+    path: "/etc/NetworkManager/powersave.conf"
+    block: |
+      [connection]
+      wifi.powersave=2
+    marker: "# {mark} ANSIBLE (laptop) MANAGED BLOCK"
+    create: true
+    mode: "0644"
+  become: true
+
+- name: enable usb autosuspend
+  ansible.builtin.blockinfile:
+    path: "/etc/udev/rules.d/50-usb_power_save.rules"
+    block: |
+      ACTION=="add", SUBSYSTEM=="usb", ATTR{product}!="*Mouse", ATTR{product}!="*Keyboard", TEST=="power/control", ATTR{power/control}="auto"
+    marker: "# {mark} ANSIBLE (laptop) MANAGED BLOCK"
+    create: true
+    mode: "0644"
   become: true
 
 - name: copy disable-turbo-boost.service

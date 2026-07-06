@@ -161,3 +161,4 @@ config/binwalk
 config/lutris
 config/truffle-nodejs
 config/cef_user_data
+config

@@ -1,9 +1,10 @@
+import re
 import secrets
 
 from libqtile.config import Group, ScratchPad, DropDown, Match
 
-
 scratchpad_id = "term_" + secrets.token_urlsafe(32)
+scratchpad_id_regex = re.compile(r"^" + re.escape(scratchpad_id) + r"$")
 
 groups = [
     Group(name="1", label="1"),
@@ -15,16 +16,16 @@ groups = [
     Group(name="7", label="7"),
     Group(name="8", label="8"),
     Group(name="9", label="9"),
-    Group(name="e", label="\ue62b"),  # 
-    Group(name="w", spawn="firefox", label="\ue658"),  # 
-    Group(name="o", label="\ue650"),  # 
+    Group(name="e", spawn="happ", label="\ue62b"),  # 
+    Group(name="w", spawn="zen-browser", label="\ue658"),  # 
+    Group(name="o", spawn="AyuGram", label="\ue650"),  # 
     ScratchPad(
         "scratchpad",
         dropdowns=[
             DropDown(
                 "kek",
                 f"tabbed -c -n {scratchpad_id} alacritty --embed",
-                match=Match(wm_class=[scratchpad_id]),
+                match=Match(wm_class=scratchpad_id_regex),
                 opacity=1,
                 y=0.05,
                 x=0.05,
@@ -32,7 +33,7 @@ groups = [
                 width=0.9,
                 on_focus_lost_hide=True,
                 warp_pointer=False,
-                ),
-            ],
-        ),
-    ]
+            ),
+        ],
+    ),
+]

@@ -65,6 +65,7 @@
     name:
       - cronie
     state: present
+  become: true
 
 - name: enable cronie
   ansible.builtin.systemd:

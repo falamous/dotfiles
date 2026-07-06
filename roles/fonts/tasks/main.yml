@@ -4,14 +4,16 @@
     name:
       - adobe-source-code-pro-fonts
       - ttf-nerd-fonts-symbols
-      - ttf-symbola
-      - xcursor-hacked-white
+      - ttf-sazanami
     state: present
+  become: true
 
 - name: install fonts from aur
   kewlfft.aur.aur:
     name:
       - ttf-courier-prime-code
+      - ttf-symbola
+      - xcursor-hacked-white
     state: present
 
 - name: ensure ~/.config/fontconfig exists

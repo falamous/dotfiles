@@ -1,0 +1,11 @@
+---
+- name: edit network manager to default to normal dns
+  ansible.builtin.blockinfile:
+    path: "/etc/NetworkManager/conf.d/dns-servers.conf"
+    block: |
+      [global-dns-domain-*]
+      servers=::1,1.1.1.1
+    marker: "# {mark} ANSIBLE (network dns) MANAGED BLOCK"
+    create: true
+    mode: "0644"
+  become: true

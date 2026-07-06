@@ -3,10 +3,11 @@
   community.general.pacman:
     name: ly
     state: present
+  become: true
 
 - name: enable ly
   ansible.builtin.systemd:
-    name: ly
+    name: ly@tty2.service
     enabled: true
     masked: false
   become: true
@@ -15,6 +16,8 @@
   ansible.builtin.blockinfile:
     path: /etc/ly/config.ini
     block: |
-      animation = matrix
+      animation = colormix
+      bigclock = en
+      battery_id = BAT1
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
   become: true
